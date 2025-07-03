@@ -914,7 +914,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 794697843, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
       propertyPath: jumpPower
-      value: 60
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 794697847, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
       propertyPath: m_GravityScale
