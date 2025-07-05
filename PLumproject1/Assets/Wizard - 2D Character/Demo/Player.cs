@@ -24,12 +24,12 @@ namespace ClearSky
             {
                 instance = this;
                 DontDestroyOnLoad(gameObject);
-                Debug.Log("DOntDestroy succesece");
+                
             }
             else
             {
                 Destroy(gameObject);
-                Debug.Log("Destroy succesece");
+                
             }
             
         }

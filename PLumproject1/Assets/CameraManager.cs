@@ -19,12 +19,12 @@ public class CameraFollowSetter : MonoBehaviour
 
         if (player != null && cam != null)
         {
-            cam.Follow = player.transform;  // 여기 수정
-            Debug.Log(" find");
+            cam.Follow = player.transform;  
+            
         }
         else
         {
-            Debug.LogError(" can't find");
+            
         }
     }
 }
