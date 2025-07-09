@@ -17,7 +17,7 @@ public class ItemClickHandler : MonoBehaviour
 
         Debug.Log(item.Name);
 
-        item.OnUse();
+        //item.OnUse();
     }
     
 }

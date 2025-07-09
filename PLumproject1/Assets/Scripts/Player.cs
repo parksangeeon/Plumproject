@@ -16,6 +16,8 @@ namespace ClearSky
         private bool alive = true;
         private static Player instance;
 
+        public Inventory inventory;
+
 
         // Start is called before the first frame update
         void Awake()
@@ -24,14 +26,14 @@ namespace ClearSky
             {
                 instance = this;
                 DontDestroyOnLoad(gameObject);
-                
+
             }
             else
             {
                 Destroy(gameObject);
-                
+
             }
-            
+
         }
         void Start()
         {
@@ -50,12 +52,34 @@ namespace ClearSky
                 Jump();
                 Run();
 
+
+                
             }
         }
+
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             anim.SetBool("isJump", false);
+
+
         }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+
+            if (other.gameObject.CompareTag("Item") && Input.GetKeyDown(KeyCode.Z))
+            {
+                IInventoryItem item = other.gameObject.GetComponent<IInventoryItem>();
+                if (item != null)
+                {
+                    inventory.AddItem(item);
+        
+                }
+            }
+
+        }
+
 
 
         void Run()
@@ -114,46 +138,49 @@ namespace ClearSky
                 isJumping = false;
                 anim.SetBool("isJump", false);
             }
-        }
 
+            
+            
+        }
 
         void Attack()
+        {
+            bool isJumping = anim.GetBool("isJump");
+            if (Input.GetKeyDown(KeyCode.Alpha1) && !isJumping)
             {
-                bool isJumping = anim.GetBool("isJump");
-                if (Input.GetKeyDown(KeyCode.Alpha1) && !isJumping)
-                {
-                    anim.SetTrigger("attack");
+                anim.SetTrigger("attack");
 
 
-                }
-            }
-         void Hurt()
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    anim.SetTrigger("hurt");
-                    if (direction == 1)
-                        rb.AddForce(new Vector2(-5f, 1f), ForceMode2D.Impulse);
-                    else
-                        rb.AddForce(new Vector2(5f, 1f), ForceMode2D.Impulse);
-                }
-            }
-         void Die()
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    anim.SetTrigger("die");
-                    alive = false;
-                }
-            }
-         void Restart()
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha0))
-                {
-                    anim.SetTrigger("idle");
-                    alive = true;
-                }
             }
         }
+        void Hurt()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                anim.SetTrigger("hurt");
+                if (direction == 1)
+                    rb.AddForce(new Vector2(-5f, 1f), ForceMode2D.Impulse);
+                else
+                    rb.AddForce(new Vector2(5f, 1f), ForceMode2D.Impulse);
+            }
+        }
+        void Die()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                anim.SetTrigger("die");
+                alive = false;
+            }
+        }
+        void Restart()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                anim.SetTrigger("idle");
+                alive = true;
+            }
+        }
+
     }
+}
 

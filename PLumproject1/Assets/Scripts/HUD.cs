@@ -20,10 +20,10 @@ public class HUD : MonoBehaviour
         {
             //Border... Image
             Image image = slot.GetChild(0).GetChild(0).GetComponent<Image>();
-
             //빈 슬롯일때
             if (!image.enabled)
             {
+                
                 image.enabled = true;
                 image.sprite = e.Item.Image;
 

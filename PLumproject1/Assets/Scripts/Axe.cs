@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
+
 public class Axe : MonoBehaviour, IInventoryItem
 {
     public string Name
@@ -13,7 +13,7 @@ public class Axe : MonoBehaviour, IInventoryItem
 
     }
 
-    public Sprite _Image = null;
+    public Sprite _Image;
 
     public Sprite Image
     {
@@ -25,15 +25,14 @@ public class Axe : MonoBehaviour, IInventoryItem
 
     }
 
+/*
     public override void OnUse()
     {
         base.OnUse();
     }
-
+*/
     public void OnPickup()
     {
         gameObject.SetActive(false);
     }
 }
-
-*/
