@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 namespace ClearSky
 {
     public class Player : MonoBehaviour
     {
+        public static bool isControlBlocked = false;
         public float movePower = 10f;
         public float jumpPower = 15f; //Set Gravity Scale in Rigidbody2D Component to 5
         public string currentMapName;
@@ -51,7 +53,7 @@ namespace ClearSky
                 Attack();
                 Jump();
                 Run();
-
+                if (isControlBlocked) { return; }
 
                 
             }
