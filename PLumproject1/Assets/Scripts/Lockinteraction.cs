@@ -14,7 +14,7 @@ public class LockInteraction : MonoBehaviour
             ClearSky.Player.isControlBlocked = true;
         }
 
-        if (lockPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if (lockPanel.activeSelf && Input.GetKeyDown(KeyCode.Tab))
         {
             lockPanel.SetActive(false);
             ClearSky.Player.isControlBlocked = false;
