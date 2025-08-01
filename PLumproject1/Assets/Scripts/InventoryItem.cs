@@ -11,7 +11,8 @@ public interface IInventoryItem
 
     void OnPickup();
 
-    //void OnUse();
+    void OnDrop();
+
 
 }
 

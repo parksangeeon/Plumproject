@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ClearSky
@@ -49,7 +50,6 @@ namespace ClearSky
             if (alive)
             {
                 Hurt();
-                Die();
                 Attack();
                 Jump();
                 Run();
@@ -67,6 +67,7 @@ namespace ClearSky
 
         }
 
+
         private void OnTriggerStay2D(Collider2D other)
         {
 
@@ -76,9 +77,11 @@ namespace ClearSky
                 if (item != null)
                 {
                     inventory.AddItem(item);
-        
+
                 }
             }
+
+
 
         }
 
@@ -141,7 +144,11 @@ namespace ClearSky
                 anim.SetBool("isJump", false);
             }
 
-            
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                Die();
+                Debug.Log("죽음");
+            }
             
         }
 
@@ -168,11 +175,9 @@ namespace ClearSky
         }
         void Die()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                anim.SetTrigger("die");
-                alive = false;
-            }
+            anim.SetTrigger("die");
+            alive = false;
+
         }
         void Restart()
         {

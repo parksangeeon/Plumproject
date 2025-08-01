@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-/*
+
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -21,11 +21,6 @@ public class PlayerController : MonoBehaviour
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         IInventoryItem item = hit.collider.GetComponent<IInventoryItem>();
-        if (item != null)
-        {
-            Inventory.AddItem(item);
-        }
     }
     
 }
-*/

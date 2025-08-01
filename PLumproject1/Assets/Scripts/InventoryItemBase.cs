@@ -24,19 +24,19 @@ public class InventoryItemBase : MonoBehaviour, IInventoryItem
         
     }
 
-    /*
-        public virtual void OnDrop()
-        {
-            RaycastHit2D hit = new RaycastHit2D;
+    
+    public virtual void OnDrop()
+    {
+        /*RaycastHit2D hit = new RaycastHit2D;
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics2D.Raycast(ray, out hit)) {
-                gameObject.SetActive(true);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics2D.Raycast(ray, out hit)) {
+            gameObject.SetActive(true);
 
-                gameObject.transform.position = hit.point;
-            }
-        }
-    */
+            gameObject.transform.position = hit.point;
+        }*/
+    }
+    
 
     public virtual void OnPickup()
     {
