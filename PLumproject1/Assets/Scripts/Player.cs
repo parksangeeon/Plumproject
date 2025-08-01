@@ -18,7 +18,7 @@ namespace ClearSky
         bool isJumping = false;
         private bool alive = true;
         private static Player instance;
-
+        public Vector2 spawnPosition = new Vector2(0, 0); // 원하는 좌표 입력
         public Inventory inventory;
 
 
@@ -42,7 +42,15 @@ namespace ClearSky
         {
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
+            
+
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                player.transform.position = spawnPosition;
+            }
         }
+        
 
         private void Update()
         {
