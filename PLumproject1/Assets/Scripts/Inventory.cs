@@ -16,6 +16,8 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(IInventoryItem item)
     {
+        Debug.Log("그럼 인건 됨???");
+        
         if (mItems.Count < SLOTS)
         {
             Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
@@ -37,27 +39,28 @@ public class Inventory : MonoBehaviour
     
 
 
+    // Inventory.cs
     public void RemoveItem(IInventoryItem item)
     {
-        if (mItems.Contains(item))
+        Debug.Log("[Inventory] RemoveItem");
+
+        if (!mItems.Contains(item))
         {
-            mItems.Remove(item);
-
-            item.OnDrop();
-
-            Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
-
-            if (collider != null)
-            {
-                collider.enabled = true;
-
-            }
-            if (ItemRemoved != null)
-            {
-                ItemRemoved(this, new InventoryEventArgs(item));
-            }
+            Debug.LogWarning("[Inventory] mItems에 아이템이 없음 (참조 불일치?)");
+            return;
         }
+
+        mItems.Remove(item);
+        item.OnDrop();
+
+        var mb = item as MonoBehaviour;
+        var col2d = mb != null ? mb.GetComponent<Collider2D>() : null;
+        if (col2d) col2d.enabled = true;
+
+        ItemRemoved?.Invoke(this, new InventoryEventArgs(item));
     }
+
+
 
 }
 
