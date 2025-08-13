@@ -6,15 +6,13 @@ using UnityEngine;
 public interface IInventoryItem
 {
     string Name { get; }
-
     Sprite Image { get; }
-
     void OnPickup();
-
     void OnDrop();
-
-
+    void OnUse();   // ← 이 줄 추가
 }
+
+
 
 public class InventoryEventArgs : EventArgs{
     public InventoryEventArgs(IInventoryItem item){

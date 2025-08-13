@@ -2,38 +2,32 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public IInventoryItem Item;                 // HUD에서 주입
-    public Inventory inventory;                 // HUD에서 주입
-    public RectTransform inventoryPanel;        // HUD에서 주입
-    public Canvas canvas;                       // 드래그하는 UI가 속한 캔버스
+    public IInventoryItem Item;          // HUD에서 주입
+    public Inventory inventory;          // HUD에서 주입
+    public RectTransform inventoryPanel; // (필수 아님) 필요 시 사용
+    public Canvas canvas;                // HUD에서 주입 권장
 
     private CanvasGroup cg;
     private Transform originalParent;
 
     void Awake()
     {
-         cg = GetComponent<CanvasGroup>();
+        cg = GetComponent<CanvasGroup>();
         if (canvas == null) canvas = GetComponentInParent<Canvas>();
-        if (inventoryPanel == null)
-        {
-            var go = GameObject.Find("InventoryPanel"); // 이름 맞춰서
-            if (go != null) inventoryPanel = go.GetComponent<RectTransform>();
-        }
-            
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
-        // 드래그 중에는 다른 UI가 레이캐스트를 받을 수 있게 해야 함
-        if (cg != null) cg.blocksRaycasts = false;
+        if (cg != null) cg.blocksRaycasts = false; // UI 레이캐스트 방해 금지
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // 캔버스 스케일 고려
+        // Canvas Scaler 대응: eventData.position 사용
         transform.position = eventData.position;
     }
 
@@ -41,33 +35,56 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (cg != null) cg.blocksRaycasts = true;
 
-        //bool outside = IsOutsideInventory(eventData);
-        // Debug.Log($"EndDrag outside={outside}");
-        /*
-        if (outside && Item != null && inventory != null)
+        bool overUseTarget = IsOverUseTargetByTag(eventData);
+        if (overUseTarget && Item != null && inventory != null)
         {
-            inventory.RemoveItem(Item); // ← 여기서 반드시 인벤토리 제거 호출
+            inventory.UseItem(Item); // ← Tag="Item" 물체 위에서만 소모
+        }
+        // 아니면 아무 일 없음 (인벤토리에 그대로 남기고 아이콘만 복귀)
+
+        // 아이콘 원위치 복귀
+        transform.SetParent(originalParent, false);
+        ((RectTransform)transform).anchoredPosition = Vector2.zero;
+    }
+
+    private bool IsOverUseTargetByTag(PointerEventData eventData)
+    {
+        // 월드 카메라 확보
+        Camera cam = eventData.pressEventCamera ?? canvas?.worldCamera ?? Camera.main;
+        if (cam == null)
+        {
+            Debug.LogWarning("[ItemDragHandler] No world camera found.");
+            return false;
         }
 
-        // 아이콘은 원위치
-        transform.SetParent(originalParent);
-        (transform as RectTransform).anchoredPosition = Vector2.zero;*/
-    }
+        // 화면좌표 → 레이 → 2D 교차 검사 (모든 레이어)
+        Ray ray = cam.ScreenPointToRay(eventData.position);
+        RaycastHit2D[] hits = Physics2D.GetRayIntersectionAll(ray, Mathf.Infinity);
 
-    /*bool IsOutsideInventory(PointerEventData eventData)
-{
-    if (inventoryPanel == null)
-    {
-        Debug.LogWarning("[ItemDragHandler] inventoryPanel is NULL. Treating as outside.");
-        return true; // 최소한 예외는 막자
-    }
+        if (hits != null && hits.Length > 0)
+        {
+            // Tag == "Item" 이 하나라도 있으면 사용 허용
+            foreach (var h in hits)
+            {
+                if (h.collider != null && h.collider.CompareTag("Item"))
+                {
+                    Debug.Log($"[ItemDragHandler] Tag hit: '{h.collider.name}' (tag=Item)");
+                    return true;
+                }
+            }
 
-    var cam = eventData.pressEventCamera != null ? eventData.pressEventCamera : canvas?.worldCamera;
+            // 디버그: 뭐를 맞췄는지 로그
+            foreach (var h in hits)
+            {
+                if (h.collider != null)
+                    Debug.Log($"[DEBUG] hit-any '{h.collider.name}' layer={LayerMask.LayerToName(h.collider.gameObject.layer)} tag={h.collider.gameObject.tag}");
+            }
+        }
+        else
+        {
+            Debug.Log("[ItemDragHandler] Ray hit nothing. Check Collider2D / camera.");
+        }
 
-    if (RectTransformUtility.RectangleContainsScreenPoint(inventoryPanel, eventData.position, cam))
         return false;
-
-    // … (월드 코너로 보수 판정하는 코드 그대로)
-}
-*/
+    }
 }
