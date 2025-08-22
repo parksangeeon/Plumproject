@@ -4,7 +4,9 @@ public class Titlecontroller : MonoBehaviour
 {
     public void OnClickStart()
     {
-        SceneManager.LoadScene("Intro");
+
+        SceneManager.LoadScene("Prologue");
+      
     }
     public void OnClickExit()
     {
@@ -13,7 +15,8 @@ public class Titlecontroller : MonoBehaviour
     }
     public void OnClickContinue()
     {
-        Debug.Log("ÀúÀå±â´É ¹Ì±¸Çö");
+        Debug.Log("ì´ì–´í•˜ê¸° êµ¬í˜„ì•ˆë¨");
+
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

@@ -54,6 +54,7 @@ namespace ClearSky
 
         private void Update()
         {
+            if (isControlBlocked) { return; }
             Restart();
             if (alive)
             {
@@ -61,9 +62,8 @@ namespace ClearSky
                 Attack();
                 Jump();
                 Run();
-                if (isControlBlocked) { return; }
 
-                
+                if (isControlBlocked) { return; }
             }
         }
 

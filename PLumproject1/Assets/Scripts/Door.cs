@@ -3,11 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class DoorTrigger : MonoBehaviour
 {
-    public string targetSceneName;        // ÀÌµ¿ÇÒ ¾À ÀÌ¸§
-    public string destinationPointName;   // µµÂøÁö StartPoint ÀÌ¸§
+    public string targetSceneName;        // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½
+    public string destinationPointName;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ StartPoint ï¿½Ì¸ï¿½
     private bool canEnter = false;
     private ClearSky.Player thePlayer;
     private static bool justEntered = false;
+    public MonologueManager monologueManager;
+
     void Start()
     {
         thePlayer = FindAnyObjectByType<ClearSky.Player>();
@@ -23,6 +25,15 @@ public class DoorTrigger : MonoBehaviour
     {
         if (canEnter && Input.GetKeyDown(KeyCode.DownArrow) && !justEntered)
         {
+
+            if (targetSceneName == "Prologue")
+            {
+                monologueManager.SetLines(new List<string> {
+                    "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½... ï¿½ï¿½ï¿½ï¿½?",
+                    "ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æºï¿½ï¿½ß°Ú¾ï¿½."
+                });
+                return;
+            }
             thePlayer.currentMapName = destinationPointName;
             justEntered = true;
             SceneManager.LoadScene(targetSceneName);
