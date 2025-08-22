@@ -24,6 +24,7 @@ namespace ClearSky
 
         private void Update()
         {
+            if (isControlBlocked) { return; }
             Restart();
             if (alive)
             {
@@ -32,6 +33,10 @@ namespace ClearSky
                 Attack();
                 Jump();
                 Run();
+<<<<<<< Updated upstream:PLumproject1/Assets/Wizard - 2D Character/Demo/SimplePlayerController.cs
+=======
+                
+>>>>>>> Stashed changes:PLumproject1/Assets/Scripts/Player.cs
 
             }
         }
