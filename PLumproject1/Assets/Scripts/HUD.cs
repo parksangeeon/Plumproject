@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     public Inventory Inventory;
-
+    
     void Start()
     {
         if (Inventory != null)
@@ -13,6 +13,7 @@ public class HUD : MonoBehaviour
             Inventory.ItemRemoved += OnItemRemoved;
         }
     }
+     
 
     void OnDestroy()
     {

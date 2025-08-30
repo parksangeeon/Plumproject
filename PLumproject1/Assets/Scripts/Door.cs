@@ -15,6 +15,7 @@ public class DoorTrigger : MonoBehaviour
     {
         thePlayer = FindAnyObjectByType<ClearSky.Player>();
         Invoke("ClearJustEntered", 0.2f);
+        thePlayer.currentMapName = SceneManager.GetActiveScene().name;
     }
 
     void ClearJustEntered()
