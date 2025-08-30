@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class DoorTrigger : MonoBehaviour
 {
@@ -29,8 +30,8 @@ public class DoorTrigger : MonoBehaviour
             if (targetSceneName == "Prologue")
             {
                 monologueManager.SetLines(new List<string> {
-                    "���� ����... ����?",
-                    "�ٸ� ���� ã�ƺ��߰ھ�."
+                    "문이 잠겼다.... 왜지?",
+                    "일단 다른곳을 찾아봐야겠어."
                 });
                 return;
             }

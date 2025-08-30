@@ -1987,6 +1987,7 @@ GameObject:
   - component: {fileID: 860829563}
   - component: {fileID: 860829562}
   - component: {fileID: 860829561}
+  - component: {fileID: 860829564}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -2025,6 +2026,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cf2173687c39243a04769764b7cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!114 &860829562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2063,6 +2067,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 860829559}
   m_CullTransparentMesh: 1
+--- !u!225 &860829564
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860829559}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &882097945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,6 +2091,7 @@ GameObject:
   - component: {fileID: 882097949}
   - component: {fileID: 882097948}
   - component: {fileID: 882097947}
+  - component: {fileID: 882097950}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -2113,6 +2130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cf2173687c39243a04769764b7cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!114 &882097948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2151,6 +2171,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882097945}
   m_CullTransparentMesh: 1
+--- !u!225 &882097950
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882097945}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &882358701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,6 +2195,7 @@ GameObject:
   - component: {fileID: 882358705}
   - component: {fileID: 882358704}
   - component: {fileID: 882358703}
+  - component: {fileID: 882358706}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -2201,6 +2234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cf2173687c39243a04769764b7cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!114 &882358704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2239,6 +2275,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 882358701}
   m_CullTransparentMesh: 1
+--- !u!225 &882358706
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882358701}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &885183579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,6 +2867,7 @@ GameObject:
   - component: {fileID: 1252800104}
   - component: {fileID: 1252800103}
   - component: {fileID: 1252800102}
+  - component: {fileID: 1252800105}
   m_Layer: 5
   m_Name: ItemImage
   m_TagString: Untagged
@@ -2857,6 +2906,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cf2173687c39243a04769764b7cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!114 &1252800103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,6 +2947,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1252800100}
   m_CullTransparentMesh: 1
+--- !u!225 &1252800105
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252800100}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!4 &1327297961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8853461538655865707, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
@@ -3876,6 +3940,7 @@ MonoBehaviour:
   lanternLight: {fileID: 1694441763}
   monologueManager: {fileID: 1382990681}
   inventory: {fileID: 1331875808}
+  mapLight: {fileID: 1399471252}
 --- !u!50 &1806163439
 Rigidbody2D:
   serializedVersion: 5

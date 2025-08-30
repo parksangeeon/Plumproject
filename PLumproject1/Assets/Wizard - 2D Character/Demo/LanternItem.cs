@@ -6,11 +6,15 @@ public class LanternItem : MonoBehaviour, IInventoryItem
 
     [SerializeField] private Sprite image;
     public Sprite Image => image;
+    
+    public void OnUse()
+    {
 
+    }
     public void OnPickup()
     {
-        // 시각 효과 등을 여기에 추가할 수 있음
-        gameObject.SetActive(false); // 월드에서 제거
+        
+        gameObject.SetActive(false); 
     }
 
     public void OnDrop()

@@ -29,9 +29,9 @@ public class doorzone : MonoBehaviour
         
         List<string> lines = new List<string>
         {
-            "���̴�...",
-            "�ϴ� ������ ������...",
-            "(�Ʒ� ����Ű�� ��ȣ�ۿ��մϴ�)"
+            "문이다...",
+            "일단 밖으로 나가봐야겠어...",
+            "(아래 방향키로 움직입니다)"
         };
         monologueManager.SetLines(lines);
 
