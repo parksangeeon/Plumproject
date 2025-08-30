@@ -909,7 +909,7 @@ PrefabInstance:
     - target: {fileID: 794697843, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
       propertyPath: inventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1331875808}
     - target: {fileID: 794697843, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
       propertyPath: jumpPower
       value: 30
@@ -2234,9 +2234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cf2173687c39243a04769764b7cef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 0}
-  inventoryPanel: {fileID: 0}
-  canvas: {fileID: 0}
+  inventory: {fileID: 1331875808}
+  inventoryPanel: {fileID: 1186024566}
+  canvas: {fileID: 374460808}
 --- !u!114 &882358704
 MonoBehaviour:
   m_ObjectHideFlags: 0
