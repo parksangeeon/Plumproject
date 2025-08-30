@@ -588,10 +588,6 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 200
       objectReference: {fileID: 0}
-    - target: {fileID: 2315285939076751413, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
-      propertyPath: m_ChildForceExpandHeight
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2631038512054947449, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
       propertyPath: pauseButton
       value: 
@@ -694,7 +690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6603430969506910247, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -6.925415
+      value: -6.925537
       objectReference: {fileID: 0}
     - target: {fileID: 6603430969506910247, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -796,15 +792,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2315285939076751413, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 10249136461050542, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2305694728887129971, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1858605523}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
 --- !u!1 &218434940
 GameObject:
@@ -3866,37 +3857,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1858605518 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2305694728887129971, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
-  m_PrefabInstance: {fileID: 178831872}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1858605523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1858605518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 1
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 1
-  m_ReverseArrangement: 0
 --- !u!1 &1938231062
 GameObject:
   m_ObjectHideFlags: 0
