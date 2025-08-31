@@ -1,31 +1,40 @@
 using UnityEngine;
 using System.Collections;
+using ClearSky;  // 네임스페이스 맞게 가져오기
 
 public class StartingPoint : MonoBehaviour
 {
-    public string startPoint;
-    private ClearSky.Player thePlayer;
+    public Transform[] spawnPoints;
 
-    IEnumerator Start()
+    void Start()
     {
-        // 1 프레임 기다려서 씬 내 오브젝트가 모두 초기화되도록 함
+        StartCoroutine(SetPlayerPositionDelayed());
+    }
+
+    IEnumerator SetPlayerPositionDelayed()
+    {
+        // 1 프레임 기다리기
         yield return null;
 
-        thePlayer = FindAnyObjectByType<ClearSky.Player>();
-        if (thePlayer == null)
+        ClearSky.Player player = FindAnyObjectByType<ClearSky.Player>();
+        if (player == null)
         {
-            Debug.LogWarning("Player를 찾을 수 없습니다!");
+            Debug.LogError("플레이어를 찾을 수 없습니다!");
             yield break;
         }
 
-        if (startPoint == thePlayer.currentMapName)
+        string pointName = player.GoingPointName;
+
+        foreach (Transform point in spawnPoints)
         {
-            thePlayer.transform.position = transform.position;
-            Debug.Log($"StartingPoint 적용 완료: {startPoint}");
+            if (point.name == pointName)
+            {
+                player.transform.position = point.position;
+                Debug.Log($"플레이어를 {pointName} 위치로 이동시켰습니다.");
+                yield break;
+            }
         }
-        else
-        {
-            Debug.Log($"현재 맵 이름과 일치하지 않음: {thePlayer.currentMapName} != {startPoint}");
-        }
+
+        Debug.LogWarning($"이름이 {pointName}인 스폰 포인트를 찾지 못했습니다.");
     }
 }

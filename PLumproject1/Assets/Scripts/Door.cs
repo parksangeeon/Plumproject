@@ -1,6 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
 public class DoorTrigger : MonoBehaviour
 {
@@ -15,7 +16,6 @@ public class DoorTrigger : MonoBehaviour
     {
         thePlayer = FindAnyObjectByType<ClearSky.Player>();
         Invoke("ClearJustEntered", 0.2f);
-        thePlayer.currentMapName = SceneManager.GetActiveScene().name;
     }
 
     void ClearJustEntered()
@@ -36,12 +36,18 @@ public class DoorTrigger : MonoBehaviour
                 });
                 return;
             }
-            thePlayer.currentMapName = destinationPointName;
+            StartCoroutine(ChangeSceneWithDelay());
+            thePlayer.GoingPointName = destinationPointName;
             justEntered = true;
             SceneManager.LoadScene(targetSceneName);
         }
     }
-
+    IEnumerator ChangeSceneWithDelay()
+    {
+        justEntered = true;
+        yield return new WaitForSeconds(0.2f);  // 혹은 페이드 아웃 코루틴
+        SceneManager.LoadScene(targetSceneName);
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
