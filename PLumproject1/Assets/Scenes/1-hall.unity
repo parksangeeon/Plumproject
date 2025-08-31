@@ -3115,7 +3115,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 907255873824824355, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: startPoint
-      value: Prologue
+      value: P-door
       objectReference: {fileID: 0}
     - target: {fileID: 2914193476423650362, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: m_LocalPosition.x

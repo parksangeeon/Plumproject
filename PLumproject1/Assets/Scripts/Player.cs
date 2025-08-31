@@ -20,6 +20,7 @@ namespace ClearSky
         private static Player instance;
         public Vector2 spawnPosition = new Vector2(0, 0); // 원하는 좌표 입력
         public Inventory inventory;
+        public GameObject Hudinventory;
 
 
         // Start is called before the first frame update
@@ -42,7 +43,7 @@ namespace ClearSky
         {
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
-            
+            Hudinventory.SetActive(false);
 
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
@@ -58,6 +59,7 @@ namespace ClearSky
             Restart();
             if (alive)
             {
+                OpenInventory();
                 Hurt();
                 Attack();
                 Jump();
@@ -66,7 +68,13 @@ namespace ClearSky
                 if (isControlBlocked) { return; }
             }
         }
-
+        void OpenInventory()
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Hudinventory.SetActive(!Hudinventory.activeSelf);
+            }
+        }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
