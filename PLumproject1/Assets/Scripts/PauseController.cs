@@ -1,6 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseController : MonoBehaviour
 {
@@ -8,76 +8,64 @@ public class PauseController : MonoBehaviour
     private bool isPaused = false;
     private static PauseController instance;
     public GameObject pauseButton;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // ÏÑ∏Ïù¥Î∏å/Î°úÎìú
+    public SaveLoadPanel saveLoadPanel;
+    public Button saveButton;
+    public Button loadButton;
+
     void Start()
     {
-        pauseMenuUI.SetActive(false);
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
+        if (saveButton) saveButton.onClick.AddListener(OpenSave);
+        if (loadButton) loadButton.onClick.AddListener(OpenLoad);
     }
-
-    // Update is called once per frame
 
     void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject); // ¡ﬂ∫π πÊ¡ˆ
-            return;
-        }
-
+        if (instance != null && instance != this) { Destroy(gameObject); return; }
         instance = this;
-        DontDestroyOnLoad(gameObject); // æ¿ ¿¸»Øø°µµ ¿Ø¡ˆ
+        DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "TITLE")
         {
-            pauseMenuUI.SetActive(false); // ≈∏¿Ã∆≤ æ¿ø°º≠¥¬ ∆€¡Ó UI ≤®µŒ±‚
-            pauseButton.SetActive(false); 
-            this.enabled = false;         // æ∆øπ Ω∫≈©∏≥∆Æ ∫Ò»∞º∫»≠
+            if (pauseMenuUI) pauseMenuUI.SetActive(false);
+            if (pauseButton) pauseButton.SetActive(false);
+            this.enabled = false;
             return;
         }
         else
         {
-            this.enabled = true;          // ¿Œ∞‘¿” æ¿ø°º≠¥¬ »∞º∫»≠
+            if (pauseButton) pauseButton.SetActive(true);
+            this.enabled = true;
         }
     }
+
     void Update()
     {
         if (!this.enabled) return;
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                Resume();
-                
-            }
-            else
-                Pause();
+            if (isPaused) Resume(); else Pause();
         }
     }
-    
-    public void OnPauseButtonClicked()
-    {
-        if (!isPaused)
-        {
-            Pause();
-        }
-    }
+
+    public void OnPauseButtonClicked() { if (!isPaused) Pause(); }
+
     public void Resume()
     {
-        pauseMenuUI.SetActive(false);
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
     }
     public void Pause()
     {
-        pauseMenuUI.SetActive(true);
+        if (pauseMenuUI) pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
     }
@@ -85,14 +73,21 @@ public class PauseController : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("TITLE");
-        pauseMenuUI.SetActive(false);
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
     }
-    public void OpenOptions()
+    public void OpenOptions() { Debug.Log("ÏòµÏÖò Ïó¥Í∏∞"); }
+
+    // Î≤ÑÌäºÏù¥ SaveGame()ÏùÑ Í∞ÄÎ¶¨ÌÇ§Í≥† ÏûàÎã§Î©¥ Ïù¥ Î©îÏÑúÎìú ÌïòÎÇòÎßå ÎÇ®Í∏∞ÏÑ∏Ïöî.
+    public void SaveGame() => OpenSave();
+
+    public void OpenSave()
     {
-        Debug.Log("ø…º« ø≠±‚");
+        Pause();
+        if (saveLoadPanel) saveLoadPanel.Open(SaveLoadMode.Save);
     }
-    public void SaveGame()
+    public void OpenLoad()
     {
-        Debug.Log("∞‘¿”¿˙¿Â");
+        Pause();
+        if (saveLoadPanel) saveLoadPanel.Open(SaveLoadMode.Load);
     }
 }

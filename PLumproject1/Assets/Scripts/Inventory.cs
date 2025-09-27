@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class Inventory : MonoBehaviour
     public event EventHandler<InventoryEventArgs> ItemAdded;
 
     public event EventHandler<InventoryEventArgs> ItemRemoved;
-    
+
     // Inventory.cs
     public event EventHandler<InventoryEventArgs> ItemUsed; // 필요하면 UI용으로도 쓸 수 있음
 
@@ -54,7 +55,7 @@ public class Inventory : MonoBehaviour
             }
         }
     }
-    
+
 
 
     // Inventory.cs
@@ -77,6 +78,32 @@ public class Inventory : MonoBehaviour
 
         ItemRemoved?.Invoke(this, new InventoryEventArgs(item));
     }
+
+    public List<string> GetItemIds()
+    {
+        var list = new List<string>();
+        foreach (var it in mItems)
+        {
+            if (it != null) list.Add(it.Name); // Name을 저장 ID로 사용
+        }
+        return list;
+    }
+
+
+    /// <summary>
+    /// 로드 전용 클리어: 월드에 드롭하지 않고 내부/UI만 정리
+    /// </summary>
+    public void ClearForLoad()
+    {
+        // UI 비우기 알림
+        var copy = new List<IInventoryItem>(mItems);
+        foreach (var it in copy)
+        {
+            ItemRemoved?.Invoke(this, new InventoryEventArgs(it));
+        }
+        mItems.Clear();
+    }
+
 
 
 
