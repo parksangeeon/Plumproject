@@ -9,12 +9,21 @@ public class LanternItem : MonoBehaviour, IInventoryItem
 
     public void OnPickup()
     {
-        // ½Ã°¢ È¿°ú µîÀ» ¿©±â¿¡ Ãß°¡ÇÒ ¼ö ÀÖÀ½
-        gameObject.SetActive(false); // ¿ùµå¿¡¼­ Á¦°Å
+        // ì¸ë²¤í† ë¦¬ì— ë“¤ì–´ê°ˆ ë•Œ ì›”ë“œì—ì„œ ìˆ¨ê¹€
+        gameObject.SetActive(false);
     }
 
     public void OnDrop()
     {
-        Debug.Log("·£ÅÏÀº µå·ÓÇÒ ¼ö ¾ø½À´Ï´Ù.");
+        // ì›”ë“œì— ë“œë¡­ë  ë•Œ í–‰ë™(ì›í•˜ë©´ ì½œë¼ì´ë”/ë¬¼ë¦¬ í™œì„±í™” ë“±)
+        Debug.Log("[LanternItem] Dropped.");
+    }
+
+    public void OnUse()
+    {
+        // í¼ì¦/ë˜ì „ ë“±ì—ì„œ ì‚¬ìš©ëì„ ë•Œ í–‰ë™
+        Debug.Log("[LanternItem] Used.");
+        // í•„ìš”í•˜ë‹¤ë©´ ì—¬ê¸°ì„œ ì‹¤ì œ íš¨ê³¼(ë¼ì´íŠ¸ ì¼œê¸° ë“±)ë¥¼ ë¶™ì´ì„¸ìš”.
+        // ex) GetComponentInChildren<Light2D>()?.gameObject.SetActive(true);
     }
 }
