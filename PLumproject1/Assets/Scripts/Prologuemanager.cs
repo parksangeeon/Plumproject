@@ -12,7 +12,9 @@ public class PrologueManager : MonoBehaviour
     public Sprite backgroundSprite;
     public GameObject nextIcon;
     public MonologueManager monologueManager;
-  
+    
+    
+
     [TextArea(3, 10)]
     public List<string> lines;
 
@@ -26,7 +28,8 @@ public class PrologueManager : MonoBehaviour
         monologueManager.gameObject.SetActive(false);
         monologueManager.Canvas.SetActive(false);
         StartCoroutine(RunPrologue());
-       
+        var player = FindAnyObjectByType<ClearSky.Player>();
+        player.transform.position = new Vector3(0, 0, 0);
         ClearSky.Player.isControlBlocked = true;
     }
 

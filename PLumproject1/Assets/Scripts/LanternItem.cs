@@ -19,11 +19,11 @@ public class LanternItem : MonoBehaviour, IInventoryItem
         Debug.Log("[LanternItem] Dropped.");
     }
 
-    public void OnUse()
+    public void OnUse() // ← 딱 하나만 존재해야 함
     {
         // 퍼즐/던전 등에서 사용됐을 때 행동
         Debug.Log("[LanternItem] Used.");
-        // 필요하다면 여기서 실제 효과(라이트 켜기 등)를 붙이세요.
+        // TODO: 실제 효과(라이트 켜기 등) 구현
         // ex) GetComponentInChildren<Light2D>()?.gameObject.SetActive(true);
     }
 }

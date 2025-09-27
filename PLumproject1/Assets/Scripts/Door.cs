@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,17 +31,23 @@ public class DoorTrigger : MonoBehaviour
             if (targetSceneName == "Prologue")
             {
                 monologueManager.SetLines(new List<string> {
-                    "���� ����... ����?",
-                    "�ٸ� ���� ã�ƺ��߰ھ�."
+                    "문이 잠겼다.... 왜지?",
+                    "일단 다른곳을 찾아봐야겠어."
                 });
                 return;
             }
-            thePlayer.currentMapName = destinationPointName;
+            StartCoroutine(ChangeSceneWithDelay());
+            thePlayer.GoingPointName = destinationPointName;
             justEntered = true;
             SceneManager.LoadScene(targetSceneName);
         }
     }
-
+    IEnumerator ChangeSceneWithDelay()
+    {
+        justEntered = true;
+        yield return new WaitForSeconds(0.2f);  // 혹은 페이드 아웃 코루틴
+        SceneManager.LoadScene(targetSceneName);
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

@@ -86,6 +86,9 @@ public class PuzzleStation : MonoBehaviour
         {
             monster.ResetToDefault();
             Debug.Log("[Station] ResetToDefault() called on monster");
+            //if (HUD != null) HUD.gameObject.SetActive(false);
+            //puzzle?.StartPuzzle();
+
         }
     }
 }

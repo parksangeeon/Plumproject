@@ -8,13 +8,15 @@ public class LanternPickup : MonoBehaviour
     private Light2D lightComponent;
     public MonologueManager monologueManager;
     public Inventory inventory; // <- 인스펙터 연결
-
+    public GameObject mapLight;
+    private Light2D mapLight2D;
     private bool isPlayerInZone = false;
     private bool lanternAcquired = false;
 
     void Start()
     {
         lightComponent = lanternLight.GetComponent<Light2D>();
+        mapLight2D = mapLight.GetComponent<Light2D>();
     }
 
     void Update()
@@ -31,6 +33,7 @@ public class LanternPickup : MonoBehaviour
             { 
                 inventory.AddItem(item);
                 item.OnPickup();
+                mapLight2D.intensity = 0.02f;
                 lightComponent.intensity = 1.0f;
                 lightComponent.pointLightOuterRadius = 5f;
             }
