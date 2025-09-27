@@ -4,33 +4,33 @@ using UnityEngine.Events;
 public class RhythmPuzzleManager : MonoBehaviour
 {
     [Header("References")]
-    public RectTransform playArea;      // 노트 영역
-    public GameObject notePrefab;       // RhythmNote 프리팹
+    public RectTransform playArea;      // 노트가 뜨는 UI 영역
+    public GameObject notePrefab;       // RhythmNote가 붙은 UI 프리팹
 
     [Header("Puzzle Settings")]
-    public int noteCount = 4;
-    public float approachTime = 1.2f;
-    public float hitWindow = 0.20f;
-    public float startDelay = 0.5f;
+    public int noteCount = 4;           // 총 노트 개수
+    public float approachTime = 1.2f;   // 흰 링이 테두리에 닿기까지 걸리는 시간
+    public float hitWindow = 0.20f;     // 허용 타이밍(±초)
+    public float startDelay = 0.5f;     // 첫 노트 전 준비 시간
 
     [Header("Control")]
-    public bool allowEscape = true;
+    public bool allowEscape = true;     // ESC로 종료 허용
 
     [Header("Events (optional)")]
-    public UnityEvent puzzleClearedEvent;   // 성공 시만
-    public UnityEvent onOpened;             // 퍼즐 열릴 때
-    public UnityEvent onClosed;             // 퍼즐 닫힐 때(성공/실패/ESC)
+    public UnityEvent puzzleClearedEvent;   // 성공 시만 호출
+    public UnityEvent onOpened;             // 퍼즐 열릴 때 호출
+    public UnityEvent onClosed;             // 퍼즐 닫힐 때(성공/실패/ESC) 호출
 
-    [Header("Monster (direct binding)")]
-    public EnemiesController enemy;         // ← 여기에 몬스터 드래그
+    [Header("Monster (optional direct binding)")]
+    public EnemiesController enemy;         // 있으면 시작/종료 시 자동 제어(없어도 정상 동작)
 
     // 내부 상태
     private bool inProgress = false;
-    private int nextIndex = 0;
-    private RhythmNote currentNote = null;
-    private float scheduledTime = 0f;
+    private int nextIndex = 0;                 // 현재 노트 인덱스(0부터)
+    private RhythmNote currentNote = null;     // 지금 화면의 노트
+    private float scheduledTime = 0f;          // 이번 노트 정각
 
-    // 외부 참조용
+    // 외부 읽기용
     public bool InProgress => inProgress;
     public float Now => Time.unscaledTime;
     public float HitWindow => hitWindow;
@@ -38,56 +38,45 @@ public class RhythmPuzzleManager : MonoBehaviour
     public int NextIndex => nextIndex;
     public float ScheduledTime => scheduledTime;
 
+    // 퍼즐 시작
     public void StartPuzzle()
     {
         if (inProgress) return;
 
         if (playArea == null || notePrefab == null)
         {
-            Debug.LogError("[RhythmPuzzle] playArea/notePrefab 미할당");
+            Debug.LogError("[RhythmPuzzle] playArea 또는 notePrefab이 비어 있습니다.");
             return;
         }
 
+        // 패널 활성화
         gameObject.SetActive(true);
-        ClearSky.Player.isControlBlocked = true;
 
         inProgress = true;
         nextIndex = 0;
         DestroyCurrentNote();
 
-        // 첫 노트 준비
+        // 첫 노트 스폰 (startDelay 후 approachTime 동안 링 수축 → 정각)
         SpawnNext(startDelay);
 
-        // 이벤트/몬스터 호출(둘 다 넣음)
+        // 이벤트/몬스터 호출
         onOpened?.Invoke();
-
-        if (enemy != null)
-        {
-            Debug.Log($"[Puzzle] enemy bound = '{enemy.name}' → StartChaseLeft()");
-            enemy.StartChaseLeft();
-        }
-        else
-        {
-            Debug.LogWarning("[Puzzle] enemy reference is NULL — RhythmPuzzleManager.enemy에 몬스터를 드래그하세요.");
-        }
+        if (enemy != null) enemy.StartChaseLeft();
 
         Debug.Log("[RhythmPuzzle] Start");
     }
 
+    // 퍼즐 종료(성공/실패/ESC 공통)
     public void ClosePuzzle()
     {
         DestroyCurrentNote();
         inProgress = false;
 
+        // 패널 비활성화
         gameObject.SetActive(false);
-        ClearSky.Player.isControlBlocked = false;
 
-        // 몬스터 리셋(직결) + 이벤트
-        if (enemy != null)
-        {
-            Debug.Log($"[Puzzle] enemy bound = '{enemy.name}' → ResetToDefault()");
-            enemy.ResetToDefault();
-        }
+        // 몬스터/이벤트
+        if (enemy != null) enemy.ResetToDefault();
         onClosed?.Invoke();
 
         Debug.Log("[RhythmPuzzle] Closed");
@@ -104,6 +93,7 @@ public class RhythmPuzzleManager : MonoBehaviour
         }
     }
 
+    // 한 번에 하나만 보이게 스폰
     private void SpawnNext(float extraDelay)
     {
         DestroyCurrentNote();
@@ -116,13 +106,13 @@ public class RhythmPuzzleManager : MonoBehaviour
             return;
         }
 
-        GameObject go = Instantiate(notePrefab, playArea);
+        var go = Instantiate(notePrefab, playArea);
         go.SetActive(true);
 
-        RhythmNote note = go.GetComponent<RhythmNote>();
+        var note = go.GetComponent<RhythmNote>();
         if (note == null)
         {
-            Debug.LogError("[RhythmPuzzle] notePrefab에 RhythmNote 컴포넌트 필요");
+            Debug.LogError("[RhythmPuzzle] notePrefab에 RhythmNote 컴포넌트가 필요합니다.");
             Destroy(go);
             Fail();
             return;
@@ -135,7 +125,7 @@ public class RhythmPuzzleManager : MonoBehaviour
         float y = Random.Range(rect.yMin + margin, rect.yMax - margin);
         ((RectTransform)go.transform).anchoredPosition = new Vector2(x, y);
 
-        // 정각(링 닿는 시점)
+        // 정각(링이 테두리에 딱 닿는 시점)
         float start = Time.unscaledTime + Mathf.Max(0f, extraDelay);
         scheduledTime = start + approachTime;
 
@@ -143,6 +133,7 @@ public class RhythmPuzzleManager : MonoBehaviour
         currentNote = note;
     }
 
+    // 노트 클릭 시 RhythmNote에서 호출
     public void TryHit(RhythmNote note)
     {
         if (!inProgress || note != currentNote) return;
@@ -165,6 +156,7 @@ public class RhythmPuzzleManager : MonoBehaviour
     {
         if (!inProgress) return;
 
+        // ESC로 즉시 종료
         if (allowEscape && Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("[RhythmPuzzle] ESC pressed → close");
@@ -172,6 +164,7 @@ public class RhythmPuzzleManager : MonoBehaviour
             return;
         }
 
+        // 타임아웃(정각 + 허용 윈도우 지나면 실패)
         if (currentNote != null && Now > scheduledTime + hitWindow)
         {
             Debug.Log("[RhythmPuzzle] Miss (timeout)");
