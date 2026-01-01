@@ -8,12 +8,12 @@ public class PauseController : MonoBehaviour
     private bool isPaused = false;
     private static PauseController instance;
     public GameObject pauseButton;
-
-    // 세이브/로드
-    public SaveLoadPanel saveLoadPanel;
-    public Button saveButton;
-    public Button loadButton;
-
+    
+    [Header("Save/Load Menu")]
+    public SaveLoadMenu saveLoadMenu;
+    public GameObject mainMenuPanel; // Resume, Save, Option, Exit 버튼이 있는 메인 패널
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
@@ -23,9 +23,14 @@ public class PauseController : MonoBehaviour
 
     void Awake()
     {
-        if (instance != null && instance != this) { Destroy(gameObject); return; }
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); // 중복 방지
+            return;
+        }
+
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject); // 씬 전환 시 유지
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -34,15 +39,14 @@ public class PauseController : MonoBehaviour
     {
         if (scene.name == "TITLE")
         {
-            if (pauseMenuUI) pauseMenuUI.SetActive(false);
-            if (pauseButton) pauseButton.SetActive(false);
-            this.enabled = false;
+            pauseMenuUI.SetActive(false); // 타이틀 씬에서는 일시정지 UI 비활성화
+            pauseButton.SetActive(false); 
+            this.enabled = false;         // 이 컨트롤러 비활성화
             return;
         }
         else
         {
-            if (pauseButton) pauseButton.SetActive(true);
-            this.enabled = true;
+            this.enabled = true;          // 다른 씬에서는 활성화
         }
     }
 
@@ -59,13 +63,29 @@ public class PauseController : MonoBehaviour
 
     public void Resume()
     {
-        if (pauseMenuUI) pauseMenuUI.SetActive(false);
+        pauseMenuUI.SetActive(false);
+        if (saveLoadMenu != null)
+        {
+            saveLoadMenu.CloseMenu();
+        }
+        if (mainMenuPanel != null)
+        {
+            mainMenuPanel.SetActive(true);
+        }
         Time.timeScale = 1f;
         isPaused = false;
     }
     public void Pause()
     {
-        if (pauseMenuUI) pauseMenuUI.SetActive(true);
+        pauseMenuUI.SetActive(true);
+        if (mainMenuPanel != null)
+        {
+            mainMenuPanel.SetActive(true);
+        }
+        if (saveLoadMenu != null)
+        {
+            saveLoadMenu.CloseMenu();
+        }
         Time.timeScale = 0f;
         isPaused = true;
     }
@@ -75,19 +95,57 @@ public class PauseController : MonoBehaviour
         SceneManager.LoadScene("TITLE");
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
     }
-    public void OpenOptions() { Debug.Log("옵션 열기"); }
-
-    // 버튼이 SaveGame()을 가리키고 있다면 이 메서드 하나만 남기세요.
-    public void SaveGame() => OpenSave();
-
-    public void OpenSave()
+    public void OpenOptions()
     {
-        Pause();
-        if (saveLoadPanel) saveLoadPanel.Open(SaveLoadMode.Save);
+        Debug.Log("옵션 열기");
     }
-    public void OpenLoad()
+    public void SaveGame()
     {
-        Pause();
-        if (saveLoadPanel) saveLoadPanel.Open(SaveLoadMode.Load);
+        // 메인 메뉴 숨기고 세이브 메뉴 표시
+        if (mainMenuPanel != null)
+        {
+            mainMenuPanel.SetActive(false);
+        }
+        
+        if (saveLoadMenu != null)
+        {
+            saveLoadMenu.OpenMenu(true); // 저장 모드
+        }
+        else
+        {
+            Debug.LogError("SaveLoadMenu가 할당되지 않았습니다!");
+        }
+    }
+
+    public void LoadGame()
+    {
+        // 메인 메뉴 숨기고 로드 메뉴 표시
+        if (mainMenuPanel != null)
+        {
+            mainMenuPanel.SetActive(false);
+        }
+        
+        if (saveLoadMenu != null)
+        {
+            saveLoadMenu.OpenMenu(false); // 로드 모드
+        }
+        else
+        {
+            Debug.LogError("SaveLoadMenu가 할당되지 않았습니다!");
+        }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        // 세이브/로드 메뉴에서 메인 메뉴로 돌아가기
+        if (saveLoadMenu != null)
+        {
+            saveLoadMenu.CloseMenu();
+        }
+        
+        if (mainMenuPanel != null)
+        {
+            mainMenuPanel.SetActive(true);
+        }
     }
 }

@@ -1,97 +1,217 @@
 using System;
-using System.Collections;               // ★ 추가
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using ClearSky;
 
-public static class SaveSystem
+public class SaveSystem : MonoBehaviour
 {
-    public const int SlotCount = 4;
-
-    static string Root => Path.Combine(Application.persistentDataPath, "saves");
-    static string SlotPath(int slot) => Path.Combine(Root, $"slot{slot}.json");
-
-    public static bool Exists(int slot) => File.Exists(SlotPath(slot));
-
-    public static SaveSummary GetSummary(int slot)
+    private const string SAVE_DIRECTORY = "/SaveData/";
+    private const int MAX_SLOTS = 4;
+    
+    private static SaveSystem instance;
+    
+    public static SaveSystem Instance
     {
-        if (!Exists(slot)) return null;
-        try
+        get
         {
-            var json = File.ReadAllText(SlotPath(slot));
-            var data = JsonUtility.FromJson<SaveData>(json);
-            return new SaveSummary
+            if (instance == null)
             {
-                sceneName = data.sceneName,
-                timestamp = data.timestamp,
-                itemCount = data.itemIds?.Count ?? 0
-            };
+                GameObject go = new GameObject("SaveSystem");
+                instance = go.AddComponent<SaveSystem>();
+                DontDestroyOnLoad(go);
+            }
+            return instance;
         }
-        catch { return null; }
     }
 
-    public static void Save(int slot, Player player, Func<List<string>> exportItems)
+    void Awake()
     {
-        if (!Directory.Exists(Root)) Directory.CreateDirectory(Root);
-
-        var data = new SaveData
+        if (instance != null && instance != this)
         {
-            sceneName = SceneManager.GetActiveScene().name,
-            timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-            playSeconds = Time.realtimeSinceStartup,
-            px = player.transform.position.x,
-            py = player.transform.position.y,
-            pz = player.transform.position.z,
-            goingPointName = player.GoingPointName,
-            itemIds = exportItems != null ? exportItems() : new List<string>()
-        };
-
-        var json = JsonUtility.ToJson(data, prettyPrint: true);
-        File.WriteAllText(SlotPath(slot), json);
-        Debug.Log($"[SaveSystem] Saved to slot {slot}: {SlotPath(slot)}");
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+        
+        // 저장 디렉토리 생성
+        string savePath = Application.persistentDataPath + SAVE_DIRECTORY;
+        if (!Directory.Exists(savePath))
+        {
+            Directory.CreateDirectory(savePath);
+        }
     }
 
-    public static IEnumerator Load(int slot, Action onFail = null)
+    public void SaveGame(int slotIndex)
     {
-        if (!Exists(slot)) { onFail?.Invoke(); yield break; }
+        if (slotIndex < 0 || slotIndex >= MAX_SLOTS)
+        {
+            Debug.LogError($"Invalid slot index: {slotIndex}");
+            return;
+        }
 
-        SaveData data;
+        // 플레이어 정보 가져오기
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogError("Player not found!");
+            return;
+        }
+
+        // 인벤토리 정보 가져오기
+        Inventory inventory = player.GetComponent<ClearSky.Player>()?.inventory;
+        List<string> itemNames = new List<string>();
+        
+        if (inventory != null)
+        {
+            itemNames = inventory.GetItemNames();
+        }
+
+        // 현재 씬 이름
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        // 플레이어 위치
+        Vector3 playerPos = player.transform.position;
+
+        // 저장 데이터 생성
+        SaveData saveData = new SaveData(slotIndex, currentScene, playerPos, itemNames);
+
+        // JSON으로 변환
+        string json = JsonUtility.ToJson(saveData, true);
+        
+        // 파일로 저장
+        string filePath = GetSaveFilePath(slotIndex);
+        File.WriteAllText(filePath, json);
+
+        Debug.Log($"게임이 슬롯 {slotIndex + 1}에 저장되었습니다: {filePath}");
+    }
+
+    public SaveData LoadGame(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= MAX_SLOTS)
+        {
+            Debug.LogError($"Invalid slot index: {slotIndex}");
+            return null;
+        }
+
+        string filePath = GetSaveFilePath(slotIndex);
+        
+        if (!File.Exists(filePath))
+        {
+            Debug.Log($"슬롯 {slotIndex + 1}에 저장된 데이터가 없습니다.");
+            return null;
+        }
+
         try
         {
-            var json = File.ReadAllText(SlotPath(slot));
-            data = JsonUtility.FromJson<SaveData>(json);
+            string json = File.ReadAllText(filePath);
+            SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+            
+            if (saveData.isEmpty)
+            {
+                return null;
+            }
+
+            Debug.Log($"슬롯 {slotIndex + 1}에서 게임을 불러왔습니다.");
+            return saveData;
         }
         catch (Exception e)
         {
-            Debug.LogError($"[SaveSystem] Load parse error: {e}");
-            onFail?.Invoke();
-            yield break;
+            Debug.LogError($"저장 데이터를 불러오는 중 오류 발생: {e.Message}");
+            return null;
         }
+    }
+
+    public void ApplySaveData(SaveData saveData)
+    {
+        if (saveData == null || saveData.isEmpty)
+        {
+            Debug.LogError("유효하지 않은 저장 데이터입니다.");
+            return;
+        }
+
+        // 일시정지 해제
+        Time.timeScale = 1f;
 
         // 씬 로드
-        Time.timeScale = 1f;
-        AsyncOperation op = SceneManager.LoadSceneAsync(data.sceneName);
-        while (!op.isDone) yield return null;
+        SceneManager.LoadScene(saveData.sceneName);
 
-        // 오브젝트 찾기
-        var player = UnityEngine.Object.FindObjectOfType<Player>();
-        var bridge = UnityEngine.Object.FindObjectOfType<SaveLoadBridge>();
-        if (player == null)
+        // 씬 로드 후 플레이어 위치 복원 (씬 로드가 완료된 후 실행되어야 함)
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.LogError("[SaveSystem] Player not found after scene load");
-            yield break;
+            if (scene.name == saveData.sceneName)
+            {
+                // 플레이어 위치 복원 (약간의 지연을 두어 씬이 완전히 로드된 후 실행)
+                StartCoroutine(RestorePlayerData(saveData));
+
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+            }
+        }
+    }
+
+    private System.Collections.IEnumerator RestorePlayerData(SaveData saveData)
+    {
+        // 씬 로드가 완전히 완료될 때까지 대기
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
+
+        // 플레이어 위치 복원
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            player.transform.position = saveData.playerPosition;
         }
 
-        // 위치/상태 복원
-        player.GoingPointName = string.IsNullOrEmpty(data.goingPointName) ? null : data.goingPointName;
-        player.transform.position = new Vector3(data.px, data.py, data.pz);
-
         // 인벤토리 복원
-        if (bridge != null) bridge.ImportItems(data.itemIds);
-        else Debug.LogWarning("[SaveSystem] SaveLoadBridge not found - inventory not restored");
+        Inventory inventory = player?.GetComponent<ClearSky.Player>()?.inventory;
+        if (inventory != null)
+        {
+            // 인벤토리 아이템 복원 로직 (추후 구현)
+            // inventory.RestoreItems(saveData.inventoryItems);
+        }
+    }
 
-        Debug.Log($"[SaveSystem] Loaded slot {slot} ({data.sceneName})");
+    public SaveData GetSaveData(int slotIndex)
+    {
+        return LoadGame(slotIndex);
+    }
+
+    public bool HasSaveData(int slotIndex)
+    {
+        string filePath = GetSaveFilePath(slotIndex);
+        if (!File.Exists(filePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            string json = File.ReadAllText(filePath);
+            SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+            return saveData != null && !saveData.isEmpty;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private string GetSaveFilePath(int slotIndex)
+    {
+        return Application.persistentDataPath + SAVE_DIRECTORY + $"save_{slotIndex}.json";
+    }
+
+    public void DeleteSave(int slotIndex)
+    {
+        string filePath = GetSaveFilePath(slotIndex);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            Debug.Log($"슬롯 {slotIndex + 1}의 저장 데이터가 삭제되었습니다.");
+        }
     }
 }
+

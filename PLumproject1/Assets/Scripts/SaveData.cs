@@ -1,29 +1,37 @@
 using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 [Serializable]
 public class SaveData
 {
-public string sceneName;
-public string timestamp; // 저장 시간 문자열
-public float playSeconds; // 선택사항(원하면 누적시간 기록)
+    public int slotIndex;
+    public string sceneName;
+    public Vector3 playerPosition;
+    public List<string> inventoryItems; // 아이템 이름 리스트
+    public DateTime saveTime;
+    public string saveTimeString; // UI 표시용
+    public bool isEmpty = true;
+    
+    // 썸네일은 Base64로 저장 (선택사항)
+    public string thumbnailBase64;
 
+    public SaveData()
+    {
+        inventoryItems = new List<string>();
+        isEmpty = true;
+    }
 
-// 플레이어 위치/상태
-public float px, py, pz; // world position
-public string goingPointName; // 사용 안 할 땐 null/""
-
-
-// 인벤토리(문자 ID)
-public List<string> itemIds = new();
+    public SaveData(int slot, string scene, Vector3 pos, List<string> items)
+    {
+        slotIndex = slot;
+        sceneName = scene;
+        playerPosition = pos;
+        inventoryItems = items ?? new List<string>();
+        saveTime = DateTime.Now;
+        saveTimeString = saveTime.ToString("yyyy-MM-dd HH:mm:ss");
+        isEmpty = false;
+    }
 }
 
 
-[Serializable]
-public class SaveSummary
-{
-public string sceneName;
-public string timestamp;
-public int itemCount;
-}
