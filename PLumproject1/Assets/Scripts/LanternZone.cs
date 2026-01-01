@@ -7,13 +7,50 @@ public class LanternZoneTrigger : MonoBehaviour
     public GameObject instructionUI;
     public MonologueManager monologueManager;
 
+    [Header("Flag Names")]
+    public string flagHasEntered = "lantern_zone_entered";
+    public string flagDialogueFinished = "lantern_zone_dialogue_finished";
+    public string flagLanternPickedUp = "lantern_picked_up";
+
     private bool hasEntered = false;
     private bool dialogueFinished = false;
     private bool lanternPickedUp = false;
 
     void Start()
     {
-       
+        RestoreState();
+    }
+
+    // SaveGameLoaderê°€ í”Œë˜ê·¸ ë³µì› í›„ í˜¸ì¶œ
+    void OnLoadGame()
+    {
+        RestoreState();
+    }
+
+    void RestoreState()
+    {
+        // í”Œë˜ê·¸ì—ì„œ ìƒíƒœ ë³µì›
+        hasEntered = GameFlags.GetBool(flagHasEntered, false);
+        dialogueFinished = GameFlags.GetBool(flagDialogueFinished, false);
+        lanternPickedUp = GameFlags.GetBool(flagLanternPickedUp, false);
+
+        // ë³µì›ëœ ìƒíƒœì— ë”°ë¼ UI ì—…ë°ì´íŠ¸
+        if (instructionUI != null)
+        {
+            if (dialogueFinished)
+            {
+                instructionUI.SetActive(false);
+            }
+            else if (hasEntered)
+            {
+                // hasEnteredê°€ trueë©´ ëŒ€í™”ê°€ ì§„í–‰ ì¤‘ì´ê±°ë‚˜ ì§„í–‰ë˜ì§€ ì•Šì€ ìƒíƒœ
+                instructionUI.SetActive(true);
+            }
+            else
+            {
+                instructionUI.SetActive(false);
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -21,17 +58,18 @@ public class LanternZoneTrigger : MonoBehaviour
         if (hasEntered || !other.CompareTag("Player")) return;
 
         hasEntered = true;
+        GameFlags.Set(flagHasEntered, true);
         instructionUI.SetActive(true);
 
-        // ÇÃ·¹ÀÌ¾î Á¶ÀÛ Àá±İ
+        // í”Œë ˆì´ì–´ ì¡°ì‘ ì ê¸ˆ
         ClearSky.Player.isControlBlocked = true;
 
-        // ´ë»ç Ãâ·Â
+        // ëŒ€í™” ì‹œì‘
         List<string> lines = new List<string>
         {
-            "ºÒºûÀÌ´Ù...",
-            "ÀÌ°ÔÀÖÀ¸¸é ´õ ¹à°Ô º¼ ¼ö ÀÖ°Ú¾î...",
-            "(ZÅ°·Î »óÈ£ÀÛ¿ëÇÕ´Ï´Ù)"
+            "ì–´ë‘¡ë‹¤...",
+            "ì´ëŸ° ê³³ì—ì„œ ëœí„´ì„ ì°¾ì•„ì•¼ í•˜ë‚˜...",
+            "(Zí‚¤ë¡œ íšë“í•˜ì„¸ìš”)"
         };
         monologueManager.SetLines(lines);
 
@@ -40,14 +78,15 @@ public class LanternZoneTrigger : MonoBehaviour
 
     IEnumerator WaitForMonologueThenEnablePickup()
     {
-        // ¸ğ³ë·Î±× ³¡³¯ ¶§±îÁö ±â´Ù¸²
+        // ëŒ€í™”ê°€ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
         while (monologueManager.gameObject.activeSelf)
             yield return null;
 
         dialogueFinished = true;
         instructionUI.SetActive(false);
+        GameFlags.Set(flagDialogueFinished, true);
         
-        ClearSky.Player.isControlBlocked = false; // Á¶ÀÛ ÇØÁ¦
+        ClearSky.Player.isControlBlocked = false;
     }
 
     void Update()
@@ -55,7 +94,7 @@ public class LanternZoneTrigger : MonoBehaviour
         if (dialogueFinished && !lanternPickedUp && Input.GetKeyDown(KeyCode.Z))
         {
             lanternPickedUp = true;
-            
+            GameFlags.Set(flagLanternPickedUp, true);
         }
     }
 }

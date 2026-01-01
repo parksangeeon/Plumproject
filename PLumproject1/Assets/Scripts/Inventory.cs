@@ -89,6 +89,22 @@ public class Inventory : MonoBehaviour
         return list;
     }
 
+    /// <summary>
+    /// 현재 인벤토리의 모든 아이템 반환 (읽기 전용)
+    /// </summary>
+    public IReadOnlyList<IInventoryItem> GetAllItems()
+    {
+        return mItems.AsReadOnly();
+    }
+
+    /// <summary>
+    /// 이름으로 아이템 찾기
+    /// </summary>
+    public IInventoryItem FindItemByName(string itemName)
+    {
+        return mItems.Find(item => item != null && item.Name == itemName);
+    }
+
 
     /// <summary>
     /// 로드 전용 클리어: 월드에 드롭하지 않고 내부/UI만 정리

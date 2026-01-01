@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using ClearSky;
 
 public enum SaveLoadMode { Save, Load }
@@ -10,8 +11,9 @@ public class SaveLoadPanel : MonoBehaviour
     [Header("Slots(4)")]
     public SaveSlotUI[] slots = new SaveSlotUI[SaveSystem.SlotCount];
 
-    [Header("Confirm Overwrite")]
+    [Header("Confirm Save Dialog")]
     public GameObject overwriteDialog;
+    public TMPro.TextMeshProUGUI dialogMessageText; // 다이얼로그 메시지 텍스트 (선택사항)
     public Button yesButton;
     public Button noButton;
 
@@ -31,6 +33,18 @@ public class SaveLoadPanel : MonoBehaviour
     {
         mode = m;
         Refresh();
+        
+        // 부모 GameObject들도 함께 활성화 (루트까지)
+        Transform current = transform.parent;
+        while (current != null)
+        {
+            if (!current.gameObject.activeSelf)
+            {
+                current.gameObject.SetActive(true);
+            }
+            current = current.parent;
+        }
+        
         gameObject.SetActive(true);
     }
 
@@ -45,6 +59,11 @@ public class SaveLoadPanel : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
+            if (slots[i] == null)
+            {
+                continue;
+            }
+            
             var sum = SaveSystem.GetSummary(i);
             slots[i].Bind(i, sum, OnSlotClicked);
         }
@@ -54,15 +73,19 @@ public class SaveLoadPanel : MonoBehaviour
     {
         if (mode == SaveLoadMode.Save)
         {
-            if (SaveSystem.Exists(index))
+            // 저장 모드: 무조건 확인 다이얼로그 표시
+            pendingSlot = index;
+            
+            // 다이얼로그 메시지 설정
+            if (dialogMessageText != null)
             {
-                pendingSlot = index;
-                if (overwriteDialog) overwriteDialog.SetActive(true);
+                bool exists = SaveSystem.Exists(index);
+                dialogMessageText.text = exists 
+                    ? $"슬롯 {index + 1}에 이미 저장된 데이터가 있습니다.\n덮어쓰시겠습니까?" 
+                    : $"슬롯 {index + 1}에 저장하시겠습니까?";
             }
-            else
-            {
-                DoSave(index);
-            }
+            
+            if (overwriteDialog) overwriteDialog.SetActive(true);
         }
         else // Load
         {
