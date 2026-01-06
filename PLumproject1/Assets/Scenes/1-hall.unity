@@ -243,7 +243,6 @@ MonoBehaviour:
   - {fileID: 1858578059}
   - {fileID: 1047541403}
   - {fileID: 1244821828}
-  spawnPointName: 
 --- !u!1 &34182187 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1723337644839177290, guid: a40a90e5701a7d64a9d53de4c0d3d419, type: 3}
@@ -557,11 +556,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.71
       objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.11
       objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -764,7 +763,7 @@ Transform:
   m_GameObject: {fileID: 169181154}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000017518181, y: 1.0363698, z: -10}
+  m_LocalPosition: {x: 1.7100067, y: 1.0363698, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1484,8 +1483,9 @@ GameObject:
   m_Component:
   - component: {fileID: 696470820}
   - component: {fileID: 696470819}
+  - component: {fileID: 696470821}
   m_Layer: 0
-  m_Name: Triangle
+  m_Name: 1-hallhightstair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1555,12 +1555,29 @@ Transform:
   m_GameObject: {fileID: 696470818}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -55.32, y: -1.14, z: 0}
+  m_LocalPosition: {x: -54.56, y: -2.01, z: 0}
   m_LocalScale: {x: 7.5383, y: 7.0905, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &696470821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696470818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac0e0328633d33459c7946829f859ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSceneName: 2-hall
+  destinationPointName: 2-1lowstair
+  monologueManager: {fileID: 1462443425}
+  talkData: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
+  progress: 5
 --- !u!1 &885954048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,9 +1905,21 @@ PrefabInstance:
       value: 1-1door
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: progress
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: talkData
+      value: 
+      objectReference: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: targetSceneName
       value: 1-1
       objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: monologueManager
+      value: 
+      objectReference: {fileID: 1462443425}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
       value: to1Hdoor
@@ -2188,7 +2217,7 @@ Transform:
   m_GameObject: {fileID: 1107611487}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.7999997, z: -10}
+  m_LocalPosition: {x: 1.71, y: 4.6899996, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2344,9 +2373,21 @@ PrefabInstance:
       value: 1-2door
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
-      propertyPath: targetSceneName
-      value: 
+      propertyPath: progress
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: talkData
+      value: 
+      objectReference: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: targetSceneName
+      value: 1-2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: monologueManager
+      value: 
+      objectReference: {fileID: 1462443425}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
       value: 
@@ -3127,7 +3168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: targetSceneName
-      value: Prologue
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: monologueManager
@@ -3355,6 +3396,10 @@ PrefabInstance:
       propertyPath: textUI
       value: 
       objectReference: {fileID: 963299489}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: monologueCanvas
+      value: 
+      objectReference: {fileID: 34182187}
     - target: {fileID: 8519695082956829381, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: m_LocalPosition.x
       value: 561.0988

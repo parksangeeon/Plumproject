@@ -8,14 +8,12 @@ namespace ClearSky
     {
         public static bool isControlBlocked = false;
         public float movePower = 10f;
-        public float jumpPower = 15f; //Set Gravity Scale in Rigidbody2D Component to 5
         public string GoingPointName;
-      
         private Rigidbody2D rb;
         private Animator anim;
         Vector3 movement;
         private int direction = 1;
-        bool isJumping = false;
+        
         private bool alive = true;
         private static Player instance;
         public Vector2 spawnPosition = new Vector2(0, 0); // 원하는 좌표 입력
@@ -55,7 +53,10 @@ namespace ClearSky
 
         private void Update()
         {
-            if (isControlBlocked) { return; }
+            if (isControlBlocked) {
+                anim.SetBool("isRun",false);
+                return; 
+                }
             Restart();
             if (alive)
             {
@@ -74,12 +75,6 @@ namespace ClearSky
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            anim.SetBool("isJump", false);
-
-
-        }
 
 
         private void OnTriggerStay2D(Collider2D other)
@@ -134,7 +129,7 @@ namespace ClearSky
         {
             if (collision.gameObject.CompareTag("Ground"))  // 바닥 태그 필요
             {
-                isJumping = false;
+                
                 anim.SetBool("isJump", false);
             }
 

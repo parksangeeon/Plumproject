@@ -34,7 +34,6 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(IInventoryItem item)
     {
-        Debug.Log("그럼 인건 됨???");
 
         if (mItems.Count < SLOTS)
         {

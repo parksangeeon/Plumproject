@@ -1,54 +1,116 @@
-using ClearSky;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
 public class MonologueManager : MonoBehaviour
 {
-    public TextMeshProUGUI textUI;
-    public float typingSpeed = 0.05f;
-    public GameObject Canvas;
-    public MonologueManager monologueManager;
-    private List<string> lines = new();  // 외부에서 설정
-    private bool isTyping = false;
+    private HashSet<int> seenEvents = new HashSet<int>();
+    private string[] curTalkList;
+    private int curTalkIndex = 0;
+    public System.Action DialogueFinished;
+    private bool isTyping = false;   
     private bool lineCompleted = false;
+    public bool IsTalking => curTalkList != null && curTalkIndex < curTalkList.Length;
+
+
+    [SerializeField] private GameObject monologueCanvas;
+    [SerializeField] private TextMeshProUGUI textUI;
+
+    public float typingSpeed = 0.05f;
+    private Coroutine typingCoroutine;
 
     void Awake()
     {
-        if (Canvas != null)
-            Canvas.SetActive(false);
+        Initialize();
     }
-
-    public void SetLines(List<string> newLines)
+    void Update()
     {
-        lines = newLines;
-        if (!Canvas.activeSelf) Canvas.SetActive(true);
-        if (!gameObject.activeSelf) gameObject.SetActive(true);
 
-        StartCoroutine(ShowLines());
-    }
-
-    IEnumerator ShowLines()
-    {
-        Player.isControlBlocked = true;
-        foreach (var line in lines)
+        if (monologueCanvas.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
-            yield return StartCoroutine(TypeLine(line));
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-            lineCompleted = false;
-            textUI.text = "";
+            if (isTyping) 
+            {
+                StopCoroutine(typingCoroutine);
+                textUI.text = curTalkList[curTalkIndex - 1]; 
+                isTyping = false;
+                lineCompleted = true;
+            }
+            else if (lineCompleted) 
+            {
+                lineCompleted = false;
+                NextTalk();
+            }
+        }
+    }
+    public void Initialize()
+    {
+        textUI.text = "";
+        curTalkIndex = 0;
+        curTalkList = null;
+        monologueCanvas.SetActive(false); 
+    }
+
+    public void StartTalk(TalkData talkData, int progress)
+    {
+        ClearSky.Player.isControlBlocked = true;
+        TalkContent selected = null;
+
+        foreach (var t in talkData.contents)
+        {
+            if (t.progress == progress)
+            {
+                
+                if (!t.isRepeatable && seenEvents.Contains(progress))
+                    return;
+
+                selected = t;
+
+                if (!t.isRepeatable)
+                    seenEvents.Add(progress);
+
+                break;
+            }
         }
 
-        Player.isControlBlocked = false;
-        gameObject.SetActive(false);
-        Canvas.SetActive(false);
+        if (selected != null && selected.scripts.Length > 0)
+        {
+            curTalkList = selected.scripts;
+            monologueCanvas.SetActive(true);
+            curTalkIndex = 0;
+            NextTalk();
+        }
+        else
+        {
+            Debug.Log("대사가 없습니다.");
+        }
+    }
+
+    public bool NextTalk()
+    {
+        if (curTalkList != null && curTalkIndex < curTalkList.Length)
+        {
+            if (typingCoroutine != null)
+                StopCoroutine(typingCoroutine);
+
+            typingCoroutine = StartCoroutine(TypeLine(curTalkList[curTalkIndex]));
+            curTalkIndex++;
+            return true;
+        }
+        else
+        {
+            Debug.Log("대화 종료 - isControlBlocked 해제됨");
+            Initialize();
+            ClearSky.Player.isControlBlocked = false;
+            DialogueFinished?.Invoke();
+            return false;
+        }
     }
 
     IEnumerator TypeLine(string line)
     {
         textUI.text = "";
         isTyping = true;
+        lineCompleted = false;
 
         foreach (char c in line)
         {

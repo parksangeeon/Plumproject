@@ -2421,7 +2421,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1197805586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3621,7 +3621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3966ba42f6d804d44b777b70d37154f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPoint: door
+  spawnPoints: []
 --- !u!1 &1637111588
 GameObject:
   m_ObjectHideFlags: 0
