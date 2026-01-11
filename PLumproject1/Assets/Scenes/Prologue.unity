@@ -1012,6 +1012,7 @@ MonoBehaviour:
   backgroundSprite: {fileID: 0}
   nextIcon: {fileID: 105748304}
   monologueManager: {fileID: 1382990681}
+  playerMonologueData: {fileID: 0}
   lines:
   - "\"\uADF8\uB294 \uBAA8\uB450\uAC00 \uBBFF\uACE0 \uB530\uB974\uB358 \uC758\uC0AC\uC600\uB2E4.\","
   - "\"\uC5B8\uB860\uC740 \uADF8\uB97C '\uAE30\uC801\uC744 \uB9CC\uB4DC\uB294 \uB0A8\uC790'\uB77C
@@ -2418,6 +2419,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructionUI: {fileID: 2024184752}
   monologueManager: {fileID: 1382990681}
+  talkData: {fileID: 0}
+  progress: 1
   flagHasEntered: lantern_zone_entered
   flagDialogueFinished: lantern_zone_dialogue_finished
   flagLanternPickedUp: lantern_picked_up
@@ -6137,6 +6140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lanternLight: {fileID: 516661236}
+  talkData: {fileID: 0}
   monologueManager: {fileID: 1382990681}
   inventory: {fileID: 1331875808}
   mapLight: {fileID: 1399471252}
@@ -6844,7 +6848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4ab7c293a83934a983560b6a21dc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instructionUI: {fileID: 2024184752}
+  talkData: {fileID: 0}
   monologueManager: {fileID: 1382990681}
 --- !u!114 &2138413570 stripped
 MonoBehaviour:
@@ -6877,6 +6881,10 @@ PrefabInstance:
       propertyPath: textUI
       value: 
       objectReference: {fileID: 1792499953}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: monologueCanvas
+      value: 
+      objectReference: {fileID: 2024184752}
     - target: {fileID: 8519695082956829381, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: m_LocalPosition.x
       value: 561.0988
