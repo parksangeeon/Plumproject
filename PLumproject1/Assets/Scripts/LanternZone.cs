@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class LanternZoneTrigger : MonoBehaviour
 {
     public GameObject instructionUI;
     public MonologueManager monologueManager;
+    public TalkData talkData;   
+    public int progress = 1;    
 
     [Header("Flag Names")]
     public string flagHasEntered = "lantern_zone_entered";
@@ -19,6 +20,7 @@ public class LanternZoneTrigger : MonoBehaviour
     void Start()
     {
         RestoreState();
+        monologueManager.DialogueFinished += HandleDialogueFinished;
     }
 
     // SaveGameLoader가 플래그 복원 후 호출
@@ -64,28 +66,15 @@ public class LanternZoneTrigger : MonoBehaviour
         // 플레이어 조작 잠금
         ClearSky.Player.isControlBlocked = true;
 
-        // 대화 시작
-        List<string> lines = new List<string>
-        {
-            "어둡다...",
-            "이런 곳에서 랜턴을 찾아야 하나...",
-            "(Z키로 획득하세요)"
-        };
-        monologueManager.SetLines(lines);
-
-        StartCoroutine(WaitForMonologueThenEnablePickup());
+        // 대화 시작 (main 방식 사용)
+        monologueManager.StartTalk(talkData, progress);
     }
 
-    IEnumerator WaitForMonologueThenEnablePickup()
+    private void HandleDialogueFinished()
     {
-        // 대화가 끝날 때까지 대기
-        while (monologueManager.gameObject.activeSelf)
-            yield return null;
-
         dialogueFinished = true;
         instructionUI.SetActive(false);
         GameFlags.Set(flagDialogueFinished, true);
-        
         ClearSky.Player.isControlBlocked = false;
     }
 

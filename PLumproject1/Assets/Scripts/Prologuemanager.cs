@@ -12,8 +12,9 @@ public class PrologueManager : MonoBehaviour
     public Sprite backgroundSprite;
     public GameObject nextIcon;
     public MonologueManager monologueManager;
-    
-    
+    public TalkData playerMonologueData;
+
+
 
     [TextArea(3, 10)]
     public List<string> lines;
@@ -26,7 +27,6 @@ public class PrologueManager : MonoBehaviour
     void Start()
     {
         monologueManager.gameObject.SetActive(false);
-        monologueManager.Canvas.SetActive(false);
         StartCoroutine(RunPrologue());
         var player = FindAnyObjectByType<ClearSky.Player>();
         player.transform.position = new Vector3(0, 0, 0);
@@ -59,19 +59,9 @@ public class PrologueManager : MonoBehaviour
         backgroundImage.gameObject.SetActive(false);
 
         monologueManager.gameObject.SetActive(true); // 이게 있어야 Awake/Start 실행돼
-        monologueManager.Canvas.SetActive(true);
+        monologueManager.StartTalk(playerMonologueData, 0);
         // 독백 대사 준비
-        List<string> postPrologueLines = new List<string>
-{
-             "여긴... 어디지?",
-             "병원인 것 같긴 한데...",
-             "왜 내가 병실에 있는 거지?",
-             "(상하 좌우 방향키로 움직입니다)"
-        };
-
-
-        monologueManager.gameObject.SetActive(true);
-        monologueManager.SetLines(postPrologueLines);
+       
     }
     IEnumerator WaitForSpacePress()
     {

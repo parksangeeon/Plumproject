@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ad7f08c4842f643a130d7d24baceb9, type: 3}
+  m_Name: PrologueD
+  m_EditorClassIdentifier: 
+  type: 0
+  contents:
+  - progress: 0
+    isRepeatable: 0
+    scripts:
+    - "\uC5EC\uAE34 \uC5B4\uB514\uC9C0..."
+    - "\uC77C\uB2E8 \uC6C0\uC9C1\uC5EC\uBD10\uC57C\uACA0\uC5B4..."
+  - progress: 1
+    isRepeatable: 0
+    scripts:
+    - "\uBD88\uBE5B\uC774\uB2E4..."
+    - "\uC55E\uC73C\uB85C \uB098\uC544\uAC00\uC57C\uACA0\uC5B4..."
+  - progress: 2
+    isRepeatable: 0
+    scripts:
+    - "\uB4F1\uBD88\uC774\uB2E4..."
+    - "\uC774\uAC8C\uC788\uC73C\uBA74 \uB354 \uC798 \uBCFC \uC218 \uC788\uACA0\uC9C0.."
+    - "(Z\uD0A4\uB85C \uC0C1\uD638\uC791\uC6A9\uD569\uB2C8\uB2E4.)"
+  - progress: 3
+    isRepeatable: 0
+    scripts:
+    - "(\uC544\uC774\uD15C\uC740 I\uD0A4\uB97C \uB20C\uB7EC \uC778\uBCA4\uD1A0\uB9AC\uC5D0\uC11C
+      \uD655\uC778\uD558\uC2E4 \uC218 \uC788\uC2B5\uB2C8\uB2E4.)"
+  - progress: 4
+    isRepeatable: 0
+    scripts:
+    - "\uBB38\uC774\uB2E4..."
+    - "\uC77C\uB2E8 \uBC16\uC73C\uB85C \uB098\uAC00\uC790.."
+    - "(\uBB38\uC5D0\uC11C \uC544\uB798\uBC29\uD5A5\uD0A4\uB97C \uB204\uB97C\uACBD\uC6B0
+      \uC774\uB3D9\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.)"

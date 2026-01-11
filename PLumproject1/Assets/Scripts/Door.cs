@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class DoorTrigger : MonoBehaviour
 {
-    public string targetSceneName;        // �̵��� �� �̸�
-    public string destinationPointName;   // ������ StartPoint �̸�
+    public string targetSceneName;        
+    public string destinationPointName;   
     private bool canEnter = false;
     private ClearSky.Player thePlayer;
     private static bool justEntered = false;
     public MonologueManager monologueManager;
+    public TalkData talkData;
+    public int progress;
 
     void Start()
     {
@@ -27,20 +29,26 @@ public class DoorTrigger : MonoBehaviour
     {
         if (canEnter && Input.GetKeyDown(KeyCode.DownArrow) && !justEntered)
         {
-
-            if (targetSceneName == "Prologue")
+           
+            
+            if (talkData != null)
             {
-                monologueManager.SetLines(new List<string> {
-                    "문이 잠겼다.... 왜지?",
-                    "일단 다른곳을 찾아봐야겠어."
-                });
-                return;
+                monologueManager.DialogueFinished += MoveScene;
+                monologueManager.StartTalk(talkData, progress);
             }
-            StartCoroutine(ChangeSceneWithDelay());
-            thePlayer.GoingPointName = destinationPointName;
+            else
+            {
+                MoveScene();
+            }
             justEntered = true;
-            SceneManager.LoadScene(targetSceneName);
         }
+    }
+    private void MoveScene()
+    {
+        monologueManager.DialogueFinished -= MoveScene; // 중복 구독 방지
+
+        thePlayer.GoingPointName = destinationPointName;
+        StartCoroutine(ChangeSceneWithDelay());
     }
     IEnumerator ChangeSceneWithDelay()
     {

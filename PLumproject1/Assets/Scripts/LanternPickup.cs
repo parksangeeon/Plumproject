@@ -5,6 +5,7 @@ public class LanternPickup : MonoBehaviour
 {
     public GameObject lanternLight;
     private Light2D lightComponent;
+    public TalkData talkData;
     public MonologueManager monologueManager;
     public Inventory inventory;
     public GameObject mapLight;
@@ -69,6 +70,7 @@ public class LanternPickup : MonoBehaviour
     {
         if (isPlayerInZone && !lanternAcquired && Input.GetKeyDown(KeyCode.Z))
         {
+            monologueManager.StartTalk(talkData, 3);
             lanternLight.SetActive(true);
             lanternAcquired = true;
             GameFlags.Set(flagLanternPickedUp, true);
@@ -76,7 +78,8 @@ public class LanternPickup : MonoBehaviour
             // 인벤토리에 추가
             IInventoryItem item = GetComponent<IInventoryItem>();
             if (item != null)
-            { 
+            {
+                
                 inventory.AddItem(item);
                 item.OnPickup();
                 mapLight2D.intensity = 0.02f;
@@ -91,8 +94,16 @@ public class LanternPickup : MonoBehaviour
         if (other.CompareTag("Player") && !lanternAcquired)
         {
             isPlayerInZone = true;
+            monologueManager.StartTalk(talkData, 2);
+            monologueManager.DialogueFinished += Ondialoguefinished;
         }
+        
     }
+    void Ondialoguefinished()
+    {
+        ClearSky.Player.isControlBlocked = false;
+    }
+
 
     void OnTriggerExit2D(Collider2D other)
     {
