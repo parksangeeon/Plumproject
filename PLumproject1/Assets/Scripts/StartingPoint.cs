@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using ClearSky;  // ³×ÀÓ½ºÆäÀÌ½º ¸Â°Ô °¡Á®¿À±â
+using ClearSky;  // ë„¤ì„ìŠ¤í˜ì´ìŠ¤ ë§ê²Œ ê°€ì ¸ì˜¤ê¸°
 
 public class StartingPoint : MonoBehaviour
 {
@@ -13,13 +13,13 @@ public class StartingPoint : MonoBehaviour
 
     IEnumerator SetPlayerPositionDelayed()
     {
-        // 1 ÇÁ·¹ÀÓ ±â´Ù¸®±â
+        // 1 í”„ë ˆì„ ê¸°ë‹¤ë¦¬ê¸°
         yield return null;
 
         ClearSky.Player player = FindAnyObjectByType<ClearSky.Player>();
         if (player == null)
         {
-            Debug.LogError("ÇÃ·¹ÀÌ¾î¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+            Debug.LogError("í”Œë ˆì´ì–´ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
             yield break;
         }
 
@@ -30,11 +30,11 @@ public class StartingPoint : MonoBehaviour
             if (point.name == pointName)
             {
                 player.transform.position = point.position;
-                Debug.Log($"ÇÃ·¹ÀÌ¾î¸¦ {pointName} À§Ä¡·Î ÀÌµ¿½ÃÄ×½À´Ï´Ù.");
+                Debug.Log($"í”Œë ˆì´ì–´ë¥¼ {pointName} ìœ„ì¹˜ë¡œ ì´ë™ì‹œì¼°ìŠµë‹ˆë‹¤.");
                 yield break;
             }
         }
 
-        Debug.LogWarning($"ÀÌ¸§ÀÌ {pointName}ÀÎ ½ºÆù Æ÷ÀÎÆ®¸¦ Ã£Áö ¸øÇß½À´Ï´Ù.");
+        Debug.LogWarning($"ì´ë¦„ì´ {pointName}ì¸ ìŠ¤í° í¬ì¸íŠ¸ë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
     }
 }

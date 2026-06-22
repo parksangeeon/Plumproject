@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class LockInteraction : MonoBehaviour
 {
-    public GameObject lockPanel; // UI¿¡ ÀÖ´Â LockPanel ¿¬°á
+    public GameObject lockPanel; // UIì— ìˆëŠ” LockPanel ì—°ê²°
     private bool isNear = false;
 
     void Update()

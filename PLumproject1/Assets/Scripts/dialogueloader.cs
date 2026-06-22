@@ -9,7 +9,7 @@ public static class DialogueLoader
 
         if (textAsset == null)
         {
-            Debug.LogError("ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù: " + fileName);
+            Debug.LogError("íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + fileName);
             return new List<string>();
         }
 

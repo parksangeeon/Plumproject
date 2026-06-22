@@ -20,7 +20,14 @@ public class LanternZoneTrigger : MonoBehaviour
     void Start()
     {
         RestoreState();
-        monologueManager.DialogueFinished += HandleDialogueFinished;
+        if (monologueManager != null)
+        {
+            monologueManager.DialogueFinished += HandleDialogueFinished;
+        }
+        else
+        {
+            Debug.LogError("LanternZoneTrigger: MonologueManager가 할당되지 않았습니다!");
+        }
     }
 
     // SaveGameLoader가 플래그 복원 후 호출
@@ -67,7 +74,15 @@ public class LanternZoneTrigger : MonoBehaviour
         ClearSky.Player.isControlBlocked = true;
 
         // 대화 시작 (main 방식 사용)
-        monologueManager.StartTalk(talkData, progress);
+        if (monologueManager != null && talkData != null)
+        {
+            monologueManager.StartTalk(talkData, progress);
+        }
+        else
+        {
+            Debug.LogError("LanternZoneTrigger: MonologueManager 또는 TalkData가 할당되지 않았습니다!");
+            ClearSky.Player.isControlBlocked = false;
+        }
     }
 
     private void HandleDialogueFinished()

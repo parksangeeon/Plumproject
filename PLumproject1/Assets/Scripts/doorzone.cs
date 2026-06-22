@@ -1,19 +1,11 @@
 using UnityEngine;
 
-public class doorzone : MonoBehaviour
+public class doorzone : AutoTalkZoneBase
 {
     public TalkData talkData;
     public MonologueManager monologueManager;
 
-    private bool hasEntered = false;
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (hasEntered || !other.CompareTag("Player")) return;
-
-        hasEntered = true;
-
-        
-        monologueManager.StartTalk(talkData, 4); 
-    }
+    protected override MonologueManager TargetMonologueManager => monologueManager;
+    protected override TalkData TargetTalkData => talkData;
+    protected override int TargetProgress => 4;
 }

@@ -12,7 +12,7 @@ public class CameraFollowSetter : MonoBehaviour
     IEnumerator DelayedFollowAssign()
     {
         yield return null;
-        yield return null; // 2ÇÁ·¹ÀÓ ´ë±â (ÇÃ·¹ÀÌ¾î »ı¼º ±â´Ù¸®±â)
+        yield return null; // 2í”„ë ˆì„ ëŒ€ê¸° (í”Œë ˆì´ì–´ ìƒì„± ê¸°ë‹¤ë¦¬ê¸°)
 
         var player = FindFirstObjectByType<ClearSky.Player>();
         var cam = FindFirstObjectByType<CinemachineCamera>();

@@ -8,8 +8,8 @@ public class EnemyFindZone : MonoBehaviour
     public TalkData talkData;
     public int progress = 0;
 
-    public CinemachineCamera playerCam; // ÇÃ·¹ÀÌ¾î µû¶ó°¡´Â Ä«¸Ş¶ó
-    public CinemachineCamera enemyCam;  // Àû °íÁ¤ Ä«¸Ş¶ó
+    public CinemachineCamera playerCam; // í”Œë ˆì´ì–´ ë”°ë¼ê°€ëŠ” ì¹´ë©”ë¼
+    public CinemachineCamera enemyCam;  // ì  ê³ ì • ì¹´ë©”ë¼
 
     private bool hasTriggered = false;
 
@@ -24,29 +24,29 @@ public class EnemyFindZone : MonoBehaviour
 
     private IEnumerator EnemyRevealSequence()
     {
-        // 1. ÇÃ·¹ÀÌ¾î Á¶ÀÛ ¸·±â
+        // 1. í”Œë ˆì´ì–´ ì¡°ì‘ ë§‰ê¸°
         ClearSky.Player.isControlBlocked = true;
 
-        // 2. Ä«¸Ş¶ó¸¦ Àû¿¡°Ô ÀüÈ¯
+        // 2. ì¹´ë©”ë¼ë¥¼ ì ì—ê²Œ ì „í™˜
         enemyCam.Priority = 20;
         playerCam.Priority = 10;
 
-        yield return new WaitForSeconds(0.5f); // Ä«¸Ş¶ó ÀÌµ¿ ÅÒ
+        yield return new WaitForSeconds(0.5f); // ì¹´ë©”ë¼ ì´ë™ í…€
 
-        // 3. Àû ´ë»ç Ãâ·Â
+        // 3. ì  ëŒ€ì‚¬ ì¶œë ¥
         monologueManager.StartTalk(talkData, progress);
 
-        // 4. ´ë»ç ³¡³¯ ¶§±îÁö ±â´Ù¸®±â
+        // 4. ëŒ€ì‚¬ ëë‚  ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¬ê¸°
         bool finished = false;
         monologueManager.DialogueFinished += () => finished = true;
         yield return new WaitUntil(() => finished);
 
-        // 5. Ä«¸Ş¶ó ´Ù½Ã ÇÃ·¹ÀÌ¾î¿¡°Ô ÀüÈ¯
+        // 5. ì¹´ë©”ë¼ ë‹¤ì‹œ í”Œë ˆì´ì–´ì—ê²Œ ì „í™˜
         playerCam.Priority = 20;
         enemyCam.Priority = 10;
         monologueManager.StartTalk(talkData, progress+1);
 
-        // 6. ÇÃ·¹ÀÌ¾î Á¶ÀÛ ÇØÁ¦
+        // 6. í”Œë ˆì´ì–´ ì¡°ì‘ í•´ì œ
         ClearSky.Player.isControlBlocked = false;
     }
 }

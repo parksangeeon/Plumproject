@@ -1,33 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class introroom : MonoBehaviour
+public class introroom : AutoTalkZoneBase
 {
     public GameObject instructionUI;
     public MonologueManager monologueManager;
-    public TalkData talkData;    
-    public int progress = 1;     
+    public TalkData talkData;
+    public int progress = 1;
 
-    private bool hasEntered = false;
+    protected override MonologueManager TargetMonologueManager => monologueManager;
+    protected override TalkData TargetTalkData => talkData;
+    protected override int TargetProgress => progress;
 
-    void OnTriggerEnter2D(Collider2D other)
-    { 
-        if (!other.CompareTag("Player")) return;
-        if (hasEntered) { return; }
-        hasEntered = true;
-        instructionUI.SetActive(true);
-
-        //  MonologueManager°¡ ¾Ë¾Æ¼­ Á¶ÀÛ Àá±İ/ÇØÁ¦ Ã³¸®
-        monologueManager.StartTalk(talkData, progress);
+    void Awake()
+    {
+        oneShot = false; // ì›ë³¸ ì½”ë“œëŠ” ë‚˜ê°ˆ ë•Œë§ˆë‹¤ ë‹¤ì‹œ ë“¤ì–´ì˜¬ ìˆ˜ ìˆë„ë¡ ë¦¬ì…‹í•¨
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    protected override void OnBeforeTalk()
     {
-        if (other.CompareTag("Player"))
-        {
+        if (instructionUI != null) instructionUI.SetActive(true);
+    }
+
+    protected override void OnTriggerExit2D(Collider2D other)
+    {
+        base.OnTriggerExit2D(other);
+        if (other.CompareTag("Player") && instructionUI != null)
             instructionUI.SetActive(false);
-            hasEntered = false; // ´Ù½Ã µé¾î¿Ã ¼ö ÀÖµµ·Ï ¸®¼ÂÇÏ°í ½ÍÀ¸¸é À¯Áö
-        }
     }
 }

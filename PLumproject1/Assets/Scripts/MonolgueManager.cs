@@ -52,6 +52,18 @@ public class MonologueManager : MonoBehaviour
 
     public void StartTalk(TalkData talkData, int progress)
     {
+        if (talkData == null)
+        {
+            Debug.LogError("MonologueManager.StartTalk: talkDataê°€ nullì…ë‹ˆë‹¤!");
+            return;
+        }
+
+        if (talkData.contents == null)
+        {
+            Debug.LogError("MonologueManager.StartTalk: talkData.contentsê°€ nullì…ë‹ˆë‹¤!");
+            return;
+        }
+
         ClearSky.Player.isControlBlocked = true;
         TalkContent selected = null;
 
@@ -81,7 +93,7 @@ public class MonologueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("´ë»ç°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ëŒ€í™”ê°€ ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 
@@ -98,7 +110,7 @@ public class MonologueManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("´ëÈ­ Á¾·á - isControlBlocked ÇØÁ¦µÊ");
+            Debug.Log("ëŒ€í™” ì¢…ë£Œ - isControlBlocked í•´ì œë¨");
             Initialize();
             ClearSky.Player.isControlBlocked = false;
             DialogueFinished?.Invoke();

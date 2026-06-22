@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 public class InteractionImage : MonoBehaviour
 {
-    public GameObject imagePanel;      // ÆĞ³Î ÀüÃ¼ (È°¼º/ºñÈ°¼º¿ë)
-    public Image imageDisplay;         // ÀÌ¹ÌÁö ÄÄÆ÷³ÍÆ®
-    public Sprite[] imageOptions;      // ¿©·¯ ½ºÇÁ¶óÀÌÆ®¸¦ ³ÖÀ» ¼öµµ ÀÖÀ½
+    public GameObject imagePanel;      // íŒ¨ë„ ì „ì²´ (í™œì„±/ë¹„í™œì„±ìš©)
+    public Image imageDisplay;         // ì´ë¯¸ì§€ ì»´í¬ë„ŒíŠ¸
+    public Sprite[] imageOptions;      // ì—¬ëŸ¬ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ë„£ì„ ìˆ˜ë„ ìˆìŒ
 
     private void Start()
     {
-        imagePanel.SetActive(false);   // Ã³À½¿¡´Â ²¨µÎ±â
+        imagePanel.SetActive(false);   // ì²˜ìŒì—ëŠ” êº¼ë‘ê¸°
     }
 
     public void ShowImage(int index)
