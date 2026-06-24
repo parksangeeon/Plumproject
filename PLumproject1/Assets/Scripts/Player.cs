@@ -79,6 +79,9 @@ namespace ClearSky
 
         private void OnTriggerStay2D(Collider2D other)
         {
+            // LanternPickup처럼 자체적으로 줍기 로직(대화/이펙트 등)을 처리하는
+            // 오브젝트는 여기서 또 AddItem을 호출하면 중복 픽업 경쟁이 생기므로 제외
+            if (other.gameObject.GetComponent<LanternPickup>() != null) return;
 
             if (other.gameObject.CompareTag("Item") && Input.GetKeyDown(KeyCode.Z))
             {
@@ -86,12 +89,8 @@ namespace ClearSky
                 if (item != null)
                 {
                     inventory.AddItem(item);
-
                 }
             }
-
-
-
         }
 
 

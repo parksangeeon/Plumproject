@@ -51,6 +51,11 @@ public class SaveGameLoader : MonoBehaviour
             GameFlags.Instance.RestoreFlags(flags);
         }
 
+        // MonologueManager의 "이미 본 대사" 기록은 GameFlags와 별개로 메모리에 남아있어서,
+        // 더 이전 상태로 로드해도 이번 세션에서 한 번 본 progress는 다시 안 재생됨 - 같이 초기화
+        var monologueManager = FindAnyObjectByType<MonologueManager>();
+        if (monologueManager != null) monologueManager.ResetSeenEvents();
+
         // StartingPoint가 1프레임 딜레이로 위치를 만지므로, 2프레임 뒤에 강제 적용
         yield return null;
         yield return null;
@@ -69,13 +74,13 @@ public class SaveGameLoader : MonoBehaviour
                 // 플래그에 따라 인벤토리 아이템 필터링
                 List<string> filteredItems = new List<string>(data.inventoryItems);
                 bool shouldHaveLantern = GameFlags.GetBool("lantern_picked_up", false);
-                
+
                 if (!shouldHaveLantern)
                 {
                     // 플래그가 false면 랜턴 제거 (모든 랜턴 제거)
                     filteredItems.RemoveAll(id => id != null && id == "Lantern");
                 }
-                
+
                 bridge.ImportItems(filteredItems);
             }
             

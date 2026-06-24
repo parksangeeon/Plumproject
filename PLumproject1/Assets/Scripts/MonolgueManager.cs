@@ -48,7 +48,14 @@ public class MonologueManager : MonoBehaviour
         textUI.text = "";
         curTalkIndex = 0;
         curTalkList = null;
-        monologueCanvas.SetActive(false); 
+        monologueCanvas.SetActive(false);
+    }
+
+    // 새 게임 시작 시 "이미 본 대사" 기록을 초기화 (MonologueManager가 DontDestroyOnLoad로
+    // 이전 플레이의 seenEvents를 그대로 들고 있으면 같은 진행도의 대사가 다시 안 나옴)
+    public void ResetSeenEvents()
+    {
+        seenEvents.Clear();
     }
 
     // 대사가 실제로 시작됐으면 true, 매칭되는 progress가 없어 아무 일도 안 일어났으면 false를 반환.

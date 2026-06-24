@@ -10,8 +10,7 @@ public class PauseController : MonoBehaviour
     public GameObject pauseButton;
     
     [Header("Save/Load Menu")]
-    public SaveLoadPanel saveLoadPanel; // SaveLoadPanel 사용
-    public SaveLoadMenu saveLoadMenu; // SaveLoadMenu (선택사항, 둘 중 하나만 사용)
+    public SaveLoadPanel saveLoadPanel;
     public GameObject mainMenuPanel; // Resume, Save, Option, Exit 버튼이 있는 메인 패널
     
     [Header("Buttons")]
@@ -73,10 +72,6 @@ public class PauseController : MonoBehaviour
         {
             saveLoadPanel.Close();
         }
-        if (saveLoadMenu != null)
-        {
-            saveLoadMenu.CloseMenu();
-        }
         if (mainMenuPanel != null)
         {
             mainMenuPanel.SetActive(true);
@@ -94,10 +89,6 @@ public class PauseController : MonoBehaviour
         if (saveLoadPanel != null)
         {
             saveLoadPanel.Close();
-        }
-        if (saveLoadMenu != null)
-        {
-            saveLoadMenu.CloseMenu();
         }
         Time.timeScale = 0f;
         isPaused = true;
@@ -124,13 +115,9 @@ public class PauseController : MonoBehaviour
         {
             saveLoadPanel.Open(SaveLoadMode.Save);
         }
-        else if (saveLoadMenu != null)
-        {
-            saveLoadMenu.OpenMenu(true); // 저장 모드
-        }
         else
         {
-            Debug.LogError("SaveLoadPanel 또는 SaveLoadMenu가 할당되지 않았습니다!");
+            Debug.LogError("SaveLoadPanel이 할당되지 않았습니다!");
         }
     }
 
@@ -141,18 +128,14 @@ public class PauseController : MonoBehaviour
         {
             mainMenuPanel.SetActive(false);
         }
-        
+
         if (saveLoadPanel != null)
         {
             saveLoadPanel.Open(SaveLoadMode.Load);
         }
-        else if (saveLoadMenu != null)
-        {
-            saveLoadMenu.OpenMenu(false); // 로드 모드
-        }
         else
         {
-            Debug.LogError("SaveLoadPanel 또는 SaveLoadMenu가 할당되지 않았습니다!");
+            Debug.LogError("SaveLoadPanel이 할당되지 않았습니다!");
         }
     }
 
@@ -163,11 +146,7 @@ public class PauseController : MonoBehaviour
         {
             saveLoadPanel.Close();
         }
-        if (saveLoadMenu != null)
-        {
-            saveLoadMenu.CloseMenu();
-        }
-        
+
         if (mainMenuPanel != null)
         {
             mainMenuPanel.SetActive(true);
