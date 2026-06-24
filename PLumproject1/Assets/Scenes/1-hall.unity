@@ -3397,6 +3397,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 963299489}
     - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: inventoryHud
+      value: 
+      objectReference: {fileID: 1792184259}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: monologueCanvas
       value: 
       objectReference: {fileID: 34182187}

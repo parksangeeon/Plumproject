@@ -31,15 +31,21 @@ public class DoorTrigger : MonoBehaviour
         {
            
             
+            bool dialogueStarted = false;
             if (talkData != null)
             {
                 monologueManager.DialogueFinished += MoveScene;
-                monologueManager.StartTalk(talkData, progress);
+                dialogueStarted = monologueManager.StartTalk(talkData, progress);
             }
-            else
+
+            if (!dialogueStarted)
             {
+                // talkData가 없거나, progress에 매칭되는 대사가 없어서 대화가 시작되지 않은 경우
+                // DialogueFinished가 절대 안 터지므로 직접 씬을 이동해야 함
+                if (talkData != null) monologueManager.DialogueFinished -= MoveScene;
                 MoveScene();
             }
+
             justEntered = true;
         }
     }
