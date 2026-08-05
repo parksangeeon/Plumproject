@@ -283,12 +283,36 @@ PrefabInstance:
       value: to1Hdoor
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: talkData
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: requiredFlag
+      value: 'enemy_1_1_revealed '
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: requiredZone
+      value: 
+      objectReference: {fileID: 1397094460}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: targetSceneName
       value: 1-hall
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: blockingProgress
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: blockingTalkData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b14806a7576cf94889ddbb3b06c6721, type: 2}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: monologueManager
+      value: 
+      objectReference: {fileID: 788078774}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
-      value: 1-1door
+      value: 1-1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1359,6 +1383,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 6814010098880497059, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 27.18
@@ -1663,7 +1691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1533519220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1676,6 +1704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180908b2aa1e8534e8e7806963b49c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  oneShot: 1
   instructionUI: {fileID: 1287131155}
   monologueManager: {fileID: 788078774}
   talkData: {fileID: 11400000, guid: 6b14806a7576cf94889ddbb3b06c6721, type: 2}

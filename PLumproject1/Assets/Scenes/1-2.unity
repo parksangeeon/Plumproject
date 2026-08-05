@@ -264,7 +264,7 @@ PrefabInstance:
       objectReference: {fileID: 1320593529}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
-      value: 1-2door
+      value: 1-2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -704,7 +704,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.7372549, g: 0.74509805, b: 0.5137255, a: 1}
   m_FlipX: 0
@@ -762,6 +762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df08a2533b76934f84972b2fc65e0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  oneShot: 1
   monologueManager: {fileID: 1320593529}
   talkData: {fileID: 11400000, guid: 726355e3a2b2db448b3019506ab19bce, type: 2}
 --- !u!61 &684260214
@@ -891,6 +892,10 @@ PrefabInstance:
     - target: {fileID: 5257718571792416579, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6814010098880497059, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1591,6 +1596,10 @@ PrefabInstance:
     - target: {fileID: 3522863063625076880, guid: a6dcc17dfe5c2a24bbc7db5221fe1327, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3981365296031767414, guid: a6dcc17dfe5c2a24bbc7db5221fe1327, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8694936011547484419, guid: a6dcc17dfe5c2a24bbc7db5221fe1327, type: 3}
       propertyPath: m_Name

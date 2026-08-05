@@ -8,7 +8,7 @@ namespace ClearSky
     {
         public static bool isControlBlocked = false;
         public float movePower = 10f;
-        public string GoingPointName;
+        public SceneEntrance pendingEntrance = SceneEntrance.None;
         private Rigidbody2D rb;
         private Animator anim;
         Vector3 movement;

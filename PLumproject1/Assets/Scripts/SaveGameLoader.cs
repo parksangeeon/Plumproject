@@ -64,7 +64,7 @@ public class SaveGameLoader : MonoBehaviour
         if (player != null)
         {
             // 스폰 포인트 이동 로직과 충돌 방지
-            player.GoingPointName = string.Empty;
+            player.pendingEntrance = SceneEntrance.None;
             player.transform.position = new Vector3(data.px, data.py, 0f);
             
             // 인벤토리 복원 (플래그 확인 후 필터링)

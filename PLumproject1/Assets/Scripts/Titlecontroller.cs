@@ -18,7 +18,7 @@ public class Titlecontroller : MonoBehaviour
 
             // Player는 DontDestroyOnLoad 싱글톤이라 Start()가 다시 호출되지 않으므로
             // 나가기 전 위치에 그대로 남아있음 - 새 게임 시작 시 직접 초기 위치로 되돌림
-            player.GoingPointName = string.Empty;
+            player.pendingEntrance = SceneEntrance.None;
             player.transform.position = player.spawnPosition;
         }
 

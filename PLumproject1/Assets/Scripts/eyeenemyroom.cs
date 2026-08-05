@@ -12,6 +12,7 @@ public class EnemyFindZone : MonoBehaviour
     public CinemachineCamera enemyCam;  // 적 고정 카메라
 
     private bool hasTriggered = false;
+    public bool IsCompleted { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,29 +25,27 @@ public class EnemyFindZone : MonoBehaviour
 
     private IEnumerator EnemyRevealSequence()
     {
-        // 1. 플레이어 조작 막기
         ClearSky.Player.isControlBlocked = true;
 
-        // 2. 카메라를 적에게 전환
+        // 카메라를 적에게 전환
         enemyCam.Priority = 20;
         playerCam.Priority = 10;
+        yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(0.5f); // 카메라 이동 텀
-
-        // 3. 적 대사 출력
+        // 적 대사 (첫 번째) — 끝날 때까지 대기
+        bool finished1 = false;
+        monologueManager.DialogueFinished += () => finished1 = true;
         monologueManager.StartTalk(talkData, progress);
+        yield return new WaitUntil(() => finished1);
 
-        // 4. 대사 끝날 때까지 기다리기
-        bool finished = false;
-        monologueManager.DialogueFinished += () => finished = true;
-        yield return new WaitUntil(() => finished);
-
-        // 5. 카메라 다시 플레이어에게 전환
+        // 카메라 다시 플레이어에게
         playerCam.Priority = 20;
         enemyCam.Priority = 10;
-        monologueManager.StartTalk(talkData, progress+1);
 
-        // 6. 플레이어 조작 해제
-        ClearSky.Player.isControlBlocked = false;
+        IsCompleted = true;
+
+        // 돌아온 후 대사 (없거나 실패해도 무방)
+        monologueManager.StartTalk(talkData, progress + 1);
+        // isControlBlocked는 MonologueManager가 대사 종료 시 자동 해제
     }
 }

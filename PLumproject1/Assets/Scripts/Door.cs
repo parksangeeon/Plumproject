@@ -5,14 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class DoorTrigger : MonoBehaviour
 {
-    public string targetSceneName;        
-    public string destinationPointName;   
+    public string targetSceneName;
+    public SceneEntrance destinationEntrance;
     private bool canEnter = false;
     private ClearSky.Player thePlayer;
     private static bool justEntered = false;
     public MonologueManager monologueManager;
     public TalkData talkData;
     public int progress;
+
+    [Header("이동 차단 조건")]
+    public EnemyFindZone requiredZone;      // 완료되어야 통과 가능한 존 (없으면 조건 없음)
+    public TalkData blockingTalkData;       // 조건 미충족 시 출력할 대사
+    public int blockingProgress = 0;
 
     void Start()
     {
@@ -29,8 +34,14 @@ public class DoorTrigger : MonoBehaviour
     {
         if (canEnter && Input.GetKeyDown(KeyCode.DownArrow) && !justEntered)
         {
-           
-            
+            // 지정된 존이 아직 완료되지 않았으면 이동 차단 (대사만 출력, justEntered 건드리지 않음)
+            if (requiredZone != null && !requiredZone.IsCompleted)
+            {
+                if (blockingTalkData != null)
+                    monologueManager.StartTalk(blockingTalkData, blockingProgress);
+                return;
+            }
+
             bool dialogueStarted = false;
             if (talkData != null)
             {
@@ -53,7 +64,7 @@ public class DoorTrigger : MonoBehaviour
     {
         monologueManager.DialogueFinished -= MoveScene; // 중복 구독 방지
 
-        thePlayer.GoingPointName = destinationPointName;
+        thePlayer.pendingEntrance = destinationEntrance;
         StartCoroutine(ChangeSceneWithDelay());
     }
     IEnumerator ChangeSceneWithDelay()
