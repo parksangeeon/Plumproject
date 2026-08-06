@@ -37,7 +37,7 @@ public class PrologueManager : MonoBehaviour
 
     IEnumerator RunPrologue()
     {
-        // Á¶ÀÛ ¸·±â
+        // ì¡°ì‘ ë§‰ê¸°
         ClearSky.Player.isControlBlocked = true;
 
         yield return StartCoroutine(FadeIn());
@@ -58,20 +58,20 @@ public class PrologueManager : MonoBehaviour
         fadePanel.gameObject.SetActive(false);
         backgroundImage.gameObject.SetActive(false);
 
-        monologueManager.gameObject.SetActive(true); // ÀÌ°Ô ÀÖ¾î¾ß Awake/Start ½ÇÇàµÅ
+        monologueManager.gameObject.SetActive(true); // ì´ê²Œ ìˆì–´ì•¼ Awake/Start ì‹¤í–‰ë¼
         monologueManager.StartTalk(playerMonologueData, 0);
-        // µ¶¹é ´ë»ç ÁØºñ
+        // ë…ë°± ëŒ€ì‚¬ ì¤€ë¹„
        
     }
     IEnumerator WaitForSpacePress()
     {
-        // ´­·È´Ù°¡ ¶¿ ¶§±îÁö ±â´Ù¸² (¿¬¼Ó ÀÔ·Â ¹æÁö)
+        // ëˆŒë ¸ë‹¤ê°€ ë—„ ë•Œê¹Œì§€ ê¸°ë‹¤ë¦¼ (ì—°ì† ì…ë ¥ ë°©ì§€)
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-        yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ±â´Ù·Á¼­ Áßº¹ ¹æÁö
+        yield return null; // ë‹¤ìŒ í”„ë ˆì„ê¹Œì§€ ê¸°ë‹¤ë ¤ì„œ ì¤‘ë³µ ë°©ì§€
     }
     IEnumerator TypeLine(string line)
     {
-        textUI.text = ""; // ÀÌÀü ÁÙ Áö¿ì±â
+        textUI.text = ""; // ì´ì „ ì¤„ ì§€ìš°ê¸°
         isTyping = true;
 
         foreach (char c in line)

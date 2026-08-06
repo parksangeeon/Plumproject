@@ -8,10 +8,26 @@ public class EnemyFindZone : MonoBehaviour
     public TalkData talkData;
     public int progress = 0;
 
-    public CinemachineCamera playerCam; // ÇÃ·¹ÀÌ¾î µû¶ó°¡´Â Ä«¸Þ¶ó
-    public CinemachineCamera enemyCam;  // Àû °íÁ¤ Ä«¸Þ¶ó
+    public CinemachineCamera playerCam;
+    public CinemachineCamera enemyCam;
+
+    [Header("ì™„ë£Œ í”Œëž˜ê·¸ â€” ê°™ì€ ì—ì…‹ì„ DoorTriggerì˜ Skip Talk Ifì—ë„ ì—°ê²°í•˜ì„¸ìš”")]
+    public GameFlag completionFlag;
 
     private bool hasTriggered = false;
+    public bool IsCompleted { get; private set; }
+
+    void Start()
+    {
+        if (completionFlag != null)
+            completionFlag.RestoreFromSave();
+
+        if (completionFlag != null && completionFlag.Value)
+        {
+            hasTriggered = true;
+            IsCompleted = true;
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,29 +40,28 @@ public class EnemyFindZone : MonoBehaviour
 
     private IEnumerator EnemyRevealSequence()
     {
-        // 1. ÇÃ·¹ÀÌ¾î Á¶ÀÛ ¸·±â
         ClearSky.Player.isControlBlocked = true;
 
-        // 2. Ä«¸Þ¶ó¸¦ Àû¿¡°Ô ÀüÈ¯
         enemyCam.Priority = 20;
         playerCam.Priority = 10;
+        yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(0.5f); // Ä«¸Þ¶ó ÀÌµ¿ ÅÒ
+        bool finished1 = false;
+        System.Action onDone = null;
+        onDone = () => { finished1 = true; monologueManager.DialogueFinished -= onDone; };
+        monologueManager.DialogueFinished += onDone;
+        bool started = monologueManager.StartTalk(talkData, progress);
+        if (!started)
+            monologueManager.DialogueFinished -= onDone;
+        else
+            yield return new WaitUntil(() => finished1);
 
-        // 3. Àû ´ë»ç Ãâ·Â
-        monologueManager.StartTalk(talkData, progress);
-
-        // 4. ´ë»ç ³¡³¯ ¶§±îÁö ±â´Ù¸®±â
-        bool finished = false;
-        monologueManager.DialogueFinished += () => finished = true;
-        yield return new WaitUntil(() => finished);
-
-        // 5. Ä«¸Þ¶ó ´Ù½Ã ÇÃ·¹ÀÌ¾î¿¡°Ô ÀüÈ¯
         playerCam.Priority = 20;
         enemyCam.Priority = 10;
-        monologueManager.StartTalk(talkData, progress+1);
 
-        // 6. ÇÃ·¹ÀÌ¾î Á¶ÀÛ ÇØÁ¦
-        ClearSky.Player.isControlBlocked = false;
+        IsCompleted = true;
+        completionFlag?.Set(true);
+
+        monologueManager.StartTalk(talkData, progress + 1);
     }
 }

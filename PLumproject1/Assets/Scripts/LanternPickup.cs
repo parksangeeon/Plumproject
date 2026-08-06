@@ -62,6 +62,11 @@ public class LanternPickup : MonoBehaviour
                 // 자신도 활성화
                 gameObject.SetActive(true);
             }
+
+            // AddItem에서 비활성화해뒀던 콜라이더도 다시 켜야 트리거가 재감지됨
+            Collider2D col = GetComponent<Collider2D>();
+            if (col != null) col.enabled = true;
+
             isPlayerInZone = false;
         }
     }
@@ -75,13 +80,11 @@ public class LanternPickup : MonoBehaviour
             lanternAcquired = true;
             GameFlags.Set(flagLanternPickedUp, true);
 
-            // 인벤토리에 추가
+            // 인벤토리에 추가 (OnPickup은 AddItem 내부에서 성공했을 때만 호출됨)
             IInventoryItem item = GetComponent<IInventoryItem>();
             if (item != null)
             {
-                
                 inventory.AddItem(item);
-                item.OnPickup();
                 mapLight2D.intensity = 0.02f;
                 lightComponent.intensity = 1.0f;
                 lightComponent.pointLightOuterRadius = 5f;

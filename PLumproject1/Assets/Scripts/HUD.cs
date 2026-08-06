@@ -12,6 +12,10 @@ public class HUD : MonoBehaviour
             Inventory.ItemAdded += OnItemAdded;       // ← 메서드명 새로 통일
             Inventory.ItemRemoved += OnItemRemoved;
         }
+        else
+        {
+            Debug.LogWarning("[HUD] Start: Inventory가 할당되지 않아 이벤트를 구독하지 못했습니다.");
+        }
     }
      
 
@@ -35,6 +39,7 @@ public class HUD : MonoBehaviour
         }
         RectTransform inventoryPanelRT = inventoryPanelTransform as RectTransform;
 
+        bool filled = false;
         foreach (Transform slot in inventoryPanelTransform)
         {
             // Border -> (자식) -> ItemImage 구조라고 가정
@@ -56,16 +61,27 @@ public class HUD : MonoBehaviour
                 var canvas = GetComponentInParent<Canvas>();
                 if (canvas != null) drag.canvas = canvas;
 
+                filled = true;
                 break;
             }
+        }
+
+        if (!filled)
+        {
+            Debug.LogWarning($"[HUD] OnItemAdded: '{e.Item?.Name}'을 넣을 빈 슬롯을 찾지 못했습니다 (모든 슬롯이 이미 enabled=true 상태).");
         }
     }
 
     private void OnItemRemoved(object sender, InventoryEventArgs e)
     {
         Transform inventoryPanelTransform = transform.Find("InventoryPanel");
-        if (inventoryPanelTransform == null) return;
+        if (inventoryPanelTransform == null)
+        {
+            Debug.LogWarning("[HUD] OnItemRemoved: 'InventoryPanel'을 찾지 못했습니다.");
+            return;
+        }
 
+        bool cleared = false;
         foreach (Transform slot in inventoryPanelTransform)
         {
             Transform imageTransform = slot.GetChild(0).GetChild(0);
@@ -78,8 +94,14 @@ public class HUD : MonoBehaviour
                 image.enabled = false;
                 image.sprite  = null;
                 drag.Item     = null;
+                cleared = true;
                 break;
             }
+        }
+
+        if (!cleared)
+        {
+            Debug.LogWarning($"[HUD] OnItemRemoved: '{(e.Item != null ? e.Item.Name : "null")}'와 일치하는 슬롯을 찾지 못했습니다.");
         }
     }
 }

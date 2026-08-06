@@ -993,7 +993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &335244115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +1012,7 @@ MonoBehaviour:
   backgroundSprite: {fileID: 0}
   nextIcon: {fileID: 105748304}
   monologueManager: {fileID: 1382990681}
-  playerMonologueData: {fileID: 0}
+  playerMonologueData: {fileID: 11400000, guid: f5f236077066ae5498323ba95797873d, type: 2}
   lines:
   - "\"\uADF8\uB294 \uBAA8\uB450\uAC00 \uBBFF\uACE0 \uB530\uB974\uB358 \uC758\uC0AC\uC600\uB2E4.\","
   - "\"\uC5B8\uB860\uC740 \uADF8\uB97C '\uAE30\uC801\uC744 \uB9CC\uB4DC\uB294 \uB0A8\uC790'\uB77C
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instructionUI: {fileID: 2024184752}
   monologueManager: {fileID: 1382990681}
-  talkData: {fileID: 0}
+  talkData: {fileID: 11400000, guid: f5f236077066ae5498323ba95797873d, type: 2}
   progress: 1
   flagHasEntered: lantern_zone_entered
   flagDialogueFinished: lantern_zone_dialogue_finished
@@ -2742,6 +2742,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5874232600832749475, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1331875808}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalScale.x
       value: 4.7526674
@@ -2799,6 +2803,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+--- !u!114 &892183121 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5874232600832749475, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+  m_PrefabInstance: {fileID: 892183120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741f30960d63a984c904285d23069b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &927804302 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8655168715785618667, guid: d5de2037d62bdf142bc678d49bef527c, type: 3}
@@ -5605,6 +5620,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563770690}
   m_CullTransparentMesh: 1
+--- !u!1 &1566393871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1566393873}
+  - component: {fileID: 1566393872}
+  m_Layer: 0
+  m_Name: SaveLoadBridge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1566393872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566393871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b687ce0195336884d9b6a88242ce5e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 892183121}
+  itemDatabase: {fileID: 11400000, guid: 35be5ec678f23934d89f9bb2332d068e, type: 2}
+  spawnParent: {fileID: 0}
+--- !u!4 &1566393873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566393871}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 541.2243, y: 436.8938, z: -8.18813}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1582790306
 GameObject:
   m_ObjectHideFlags: 0
@@ -5829,6 +5891,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630976146}
   m_CullTransparentMesh: 1
+--- !u!1 &1736668793 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5992449633600212780, guid: 0d3530ee3018f684189dae47892a595e, type: 3}
+  m_PrefabInstance: {fileID: 4133014059134471011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1779597454
 GameObject:
   m_ObjectHideFlags: 0
@@ -6140,7 +6207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lanternLight: {fileID: 516661236}
-  talkData: {fileID: 0}
+  talkData: {fileID: 11400000, guid: f5f236077066ae5498323ba95797873d, type: 2}
   monologueManager: {fileID: 1382990681}
   inventory: {fileID: 1331875808}
   mapLight: {fileID: 1399471252}
@@ -6609,7 +6676,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2001727458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6848,7 +6915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4ab7c293a83934a983560b6a21dc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  talkData: {fileID: 0}
+  oneShot: 1
+  talkData: {fileID: 11400000, guid: f5f236077066ae5498323ba95797873d, type: 2}
   monologueManager: {fileID: 1382990681}
 --- !u!114 &2138413570 stripped
 MonoBehaviour:
@@ -6881,6 +6949,10 @@ PrefabInstance:
       propertyPath: textUI
       value: 
       objectReference: {fileID: 1792499953}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: inventoryHud
+      value: 
+      objectReference: {fileID: 1736668793}
     - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: monologueCanvas
       value: 
@@ -7313,6 +7385,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3023902640003028206, guid: 085c5afe6ca04f849b7194c8361cba07, type: 3}
+      propertyPath: talkData
+      value: 
+      objectReference: {fileID: 11400000, guid: f5f236077066ae5498323ba95797873d, type: 2}
+    - target: {fileID: 3023902640003028206, guid: 085c5afe6ca04f849b7194c8361cba07, type: 3}
+      propertyPath: monologueManager
+      value: 
+      objectReference: {fileID: 1382990681}
     - target: {fileID: 4826290674407419418, guid: 085c5afe6ca04f849b7194c8361cba07, type: 3}
       propertyPath: m_Name
       value: Prologuedoor
@@ -7459,3 +7539,4 @@ SceneRoots:
   - {fileID: 800531871}
   - {fileID: 2024767370}
   - {fileID: 5481573596206697663}
+  - {fileID: 1566393873}

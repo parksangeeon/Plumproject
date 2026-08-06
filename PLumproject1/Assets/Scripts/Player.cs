@@ -8,7 +8,7 @@ namespace ClearSky
     {
         public static bool isControlBlocked = false;
         public float movePower = 10f;
-        public string GoingPointName;
+        public SceneEntrance pendingEntrance = SceneEntrance.None;
         private Rigidbody2D rb;
         private Animator anim;
         Vector3 movement;
@@ -16,6 +16,7 @@ namespace ClearSky
         
         private bool alive = true;
         private static Player instance;
+        public static Player Instance => instance;
         public Vector2 spawnPosition = new Vector2(0, 0); // 원하는 좌표 입력
         public Inventory inventory;
         public GameObject Hudinventory;
@@ -39,14 +40,16 @@ namespace ClearSky
         }
         void Start()
         {
+            if (instance != this) return; // 씬에 배치된 복제본이 이 줄까지 실행되지 않도록
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
             Hudinventory.SetActive(false);
 
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player != null)
+            if (pendingEntrance == SceneEntrance.None)
             {
-                player.transform.position = spawnPosition;
+                transform.position = spawnPosition;
+                var rb2d = GetComponent<Rigidbody2D>();
+                if (rb2d != null) rb2d.position = spawnPosition;
             }
         }
         
@@ -79,6 +82,9 @@ namespace ClearSky
 
         private void OnTriggerStay2D(Collider2D other)
         {
+            // LanternPickup처럼 자체적으로 줍기 로직(대화/이펙트 등)을 처리하는
+            // 오브젝트는 여기서 또 AddItem을 호출하면 중복 픽업 경쟁이 생기므로 제외
+            if (other.gameObject.GetComponent<LanternPickup>() != null) return;
 
             if (other.gameObject.CompareTag("Item") && Input.GetKeyDown(KeyCode.Z))
             {
@@ -86,12 +92,8 @@ namespace ClearSky
                 if (item != null)
                 {
                     inventory.AddItem(item);
-
                 }
             }
-
-
-
         }
 
 

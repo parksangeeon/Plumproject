@@ -211,7 +211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &33049761
 Transform:
   m_ObjectHideFlags: 0
@@ -239,10 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3966ba42f6d804d44b777b70d37154f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1858578059}
-  - {fileID: 1047541403}
-  - {fileID: 1244821828}
 --- !u!1 &34182187 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1723337644839177290, guid: a40a90e5701a7d64a9d53de4c0d3d419, type: 3}
@@ -553,6 +549,10 @@ PrefabInstance:
     - target: {fileID: 5257718571792416579, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_Name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6814010098880497059, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1573,11 +1573,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac0e0328633d33459c7946829f859ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: 2-hall
-  destinationPointName: 2-1lowstair
+  destinationEntrance: 2
   monologueManager: {fileID: 1462443425}
   talkData: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
   progress: 5
+  requiredZone: {fileID: 0}
+  blockingTalkData: {fileID: 0}
+  blockingProgress: 0
+  skipTalkIf: {fileID: 0}
 --- !u!1 &885954048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,6 +1916,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: skipTalkIf
+      value: 
+      objectReference: {fileID: 11400000, guid: e2d3cd5513442c646a456afc99cb3dad, type: 2}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: targetSceneName
       value: 1-1
       objectReference: {fileID: 0}
@@ -1922,18 +1929,34 @@ PrefabInstance:
       objectReference: {fileID: 1462443425}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
-      value: to1Hdoor
+      value: 1-1door
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4600134530876666357, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1047541405}
   m_SourcePrefab: {fileID: 100100000, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
---- !u!4 &1047541403 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2914193476423650362, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+--- !u!1 &1047541404 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4600134530876666357, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
   m_PrefabInstance: {fileID: 1047541402}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1047541405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047541404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa14178a49cadc4e8dcc899199105cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entranceId: 0
 --- !u!1 &1072725529
 GameObject:
   m_ObjectHideFlags: 0
@@ -2389,19 +2412,39 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1462443425}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: destinationEntrance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: destinationPointName
-      value: 
+      value: 1-2door
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4600134530876666357, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1244821830}
   m_SourcePrefab: {fileID: 100100000, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
---- !u!4 &1244821828 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2914193476423650362, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+--- !u!1 &1244821829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4600134530876666357, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
   m_PrefabInstance: {fileID: 1244821827}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1244821830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244821829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa14178a49cadc4e8dcc899199105cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entranceId: 1
 --- !u!4 &1275095095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
@@ -3183,11 +3226,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
---- !u!4 &1858578059 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2914193476423650362, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
-  m_PrefabInstance: {fileID: 1858578058}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1917484479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3396,6 +3434,10 @@ PrefabInstance:
       propertyPath: textUI
       value: 
       objectReference: {fileID: 963299489}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: inventoryHud
+      value: 
+      objectReference: {fileID: 1792184259}
     - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: monologueCanvas
       value: 

@@ -20,7 +20,14 @@ public class LanternZoneTrigger : MonoBehaviour
     void Start()
     {
         RestoreState();
-        monologueManager.DialogueFinished += HandleDialogueFinished;
+        if (monologueManager != null)
+        {
+            monologueManager.DialogueFinished += HandleDialogueFinished;
+        }
+        else
+        {
+            Debug.LogError("LanternZoneTrigger: MonologueManager가 할당되지 않았습니다!");
+        }
     }
 
     // SaveGameLoader가 플래그 복원 후 호출
@@ -67,7 +74,22 @@ public class LanternZoneTrigger : MonoBehaviour
         ClearSky.Player.isControlBlocked = true;
 
         // 대화 시작 (main 방식 사용)
-        monologueManager.StartTalk(talkData, progress);
+        bool dialogueStarted = false;
+        if (monologueManager != null && talkData != null)
+        {
+            dialogueStarted = monologueManager.StartTalk(talkData, progress);
+        }
+        else
+        {
+            Debug.LogError("LanternZoneTrigger: MonologueManager 또는 TalkData가 할당되지 않았습니다!");
+        }
+
+        // 대화가 실제로 시작되지 않았다면(매칭되는 대사 없음 등) 조작 잠금을 풀어줘야
+        // HandleDialogueFinished가 영원히 안 불려서 플레이어가 멈추는 일이 없음
+        if (!dialogueStarted)
+        {
+            ClearSky.Player.isControlBlocked = false;
+        }
     }
 
     private void HandleDialogueFinished()

@@ -1,26 +1,16 @@
 using UnityEngine;
 
-public class eventzone : MonoBehaviour
+public class eventzone : AutoTalkZoneBase
 {
     public MonologueManager monologueManager;
     public TalkData talkData;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override MonologueManager TargetMonologueManager => monologueManager;
+    protected override TalkData TargetTalkData => talkData;
+    protected override int TargetProgress => 0;
+
+    void Awake()
     {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-           monologueManager.StartTalk(talkData, 0);
-           
-        }
-    }
-            // Update is called once per frame
-            void Update()
-    {
-        
+        oneShot = false; // 원본 코드는 진입 가드가 없어 매번 재발동되는 동작이었음
     }
 }

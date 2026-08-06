@@ -35,23 +35,32 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(IInventoryItem item)
     {
-
-        if (mItems.Count < SLOTS)
+        if (mItems.Count >= SLOTS)
         {
-            Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
-            if (collider.enabled)
-            {
-                collider.enabled = false;
+            Debug.LogWarning($"[Inventory] AddItem 실패: 슬롯이 가득 찼습니다 ({mItems.Count}/{SLOTS}). item='{item?.Name}'");
+            return;
+        }
 
-                mItems.Add(item);
+        Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
+        if (collider == null)
+        {
+            Debug.LogWarning($"[Inventory] AddItem 실패: '{item?.Name}'에 Collider2D가 없습니다.");
+            return;
+        }
 
-                item.OnPickup();
+        if (!collider.enabled)
+        {
+            Debug.LogWarning($"[Inventory] AddItem 실패: '{item?.Name}'의 Collider2D가 이미 비활성화 상태입니다.");
+            return;
+        }
 
-                if (ItemAdded != null)
-                {
-                    ItemAdded(this, new InventoryEventArgs(item));
-                }
-            }
+        collider.enabled = false;
+        mItems.Add(item);
+        item.OnPickup();
+
+        if (ItemAdded != null)
+        {
+            ItemAdded(this, new InventoryEventArgs(item));
         }
     }
 

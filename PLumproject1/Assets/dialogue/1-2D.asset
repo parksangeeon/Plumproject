@@ -16,11 +16,7 @@ MonoBehaviour:
   contents:
   - progress: 0
     isRepeatable: 0
-    scripts:
-    - "\uC5B4\uB290\uACF3\uC5D0\uB3C4 \uCC3D\uBB38\uC774 \uC5C6\uB294\uAC74\uC9C0
-      \uC774 \uBC29 \uC5ED\uC2DC\uB3C4 \uC5B4\uB461\uB2E4.."
-  - progress: 1
-    isRepeatable: 0
+    trigger: 0
     scripts:
     - "\uC5B4\uB290\uACF3\uC5D0\uB3C4 \uCC3D\uBB38\uC774 \uC5C6\uB294\uAC74\uC9C0
       \uC774 \uBC29 \uC5ED\uC2DC\uB3C4 \uC5B4\uB461\uB2E4.."
