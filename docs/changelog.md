@@ -106,6 +106,58 @@ else
 
 ---
 
+## GameFlag SO 도입 — 시네마틱 완료 후 문 대사 건너뛰기
+
+### 신규: `GameFlag.cs`
+
+ScriptableObject 기반 bool 플래그. Inspector에서 에셋을 드래그로 연결하므로 문자열 없음.
+
+```csharp
+[CreateAssetMenu(menuName = "Game/GameFlag")]
+public class GameFlag : ScriptableObject
+{
+    private bool _value;
+    public bool Value => _value;
+
+    public void Set(bool value)
+    {
+        _value = value;
+        GameFlags.Set(name, value); // 세이브 시스템(GameFlags)에도 동기화
+    }
+
+    public void RestoreFromSave()
+    {
+        _value = GameFlags.GetBool(name, false); // 로드 후 복원용
+    }
+}
+```
+
+SO 에셋의 `name`(파일명)이 GameFlags 키로 사용되므로 세이브/로드와 자동 연동됨.
+
+### 수정: `eyeenemyroom.cs` (EnemyFindZone)
+
+| 항목 | 변경 전 | 변경 후 |
+|---|---|---|
+| 완료 상태 저장 | `private string FlagKey` (자동 생성 문자열) | `public GameFlag completionFlag` (에셋 참조) |
+| Start() 복원 | `GameFlags.GetBool(FlagKey)` | `completionFlag.RestoreFromSave()` → `completionFlag.Value` |
+| 완료 시 저장 | `GameFlags.Set(FlagKey, true)` | `completionFlag?.Set(true)` |
+
+### 수정: `Door.cs` (DoorTrigger)
+
+| 항목 | 변경 전 | 변경 후 |
+|---|---|---|
+| 대사 건너뛰기 조건 | `public string skipTalkIfFlagSet` (문자열 직접 입력) | `public GameFlag skipTalkIf` (에셋 참조) |
+
+DoorTrigger가 다른 씬의 EnemyFindZone을 직접 참조할 수 없으므로, 같은 GameFlag 에셋을 공유하는 방식으로 크로스씬 통신. 세이브 로드 시 SO 값이 초기화될 수 있으므로 `skipTalkIf.Value || GameFlags.GetBool(skipTalkIf.name)` 둘 다 체크.
+
+### Inspector 작업
+
+1. Project 창에서 `Create → Game → GameFlag` → 이름 설정 (예: `Zone_1-1_EnemyFound`)
+2. 1-1 씬 EnemyFindZone → `Completion Flag`에 에셋 드래그
+3. 1-hall 씬 DoorTrigger → `Skip Talk If`에 **같은** 에셋 드래그
+
+---
+
 ## TalkData 관리 원칙
 
 - `TalkData` 에셋은 `Assets/dialogue/` 폴더에 씬별로 보관

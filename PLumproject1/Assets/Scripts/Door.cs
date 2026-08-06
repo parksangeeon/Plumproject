@@ -18,6 +18,9 @@ public class DoorTrigger : MonoBehaviour
     public TalkData blockingTalkData;       // 조건 미충족 시 출력할 대사
     public int blockingProgress = 0;
 
+    [Header("대사 건너뛰기 조건")]
+    public GameFlag skipTalkIf;
+
     void Start()
     {
         thePlayer = FindAnyObjectByType<ClearSky.Player>();
@@ -41,8 +44,12 @@ public class DoorTrigger : MonoBehaviour
                 return;
             }
 
+            // SO 런타임 값 OR GameFlags(세이브 로드 복원) 둘 다 체크
+            bool skipDialogue = skipTalkIf != null &&
+                (skipTalkIf.Value || GameFlags.GetBool(skipTalkIf.name, false));
+
             bool dialogueStarted = false;
-            if (talkData != null)
+            if (!skipDialogue && talkData != null)
             {
                 monologueManager.DialogueFinished += MoveScene;
                 dialogueStarted = monologueManager.StartTalk(talkData, progress);
@@ -50,9 +57,7 @@ public class DoorTrigger : MonoBehaviour
 
             if (!dialogueStarted)
             {
-                // talkData가 없거나, progress에 매칭되는 대사가 없어서 대화가 시작되지 않은 경우
-                // DialogueFinished가 절대 안 터지므로 직접 씬을 이동해야 함
-                if (talkData != null) monologueManager.DialogueFinished -= MoveScene;
+                if (!skipDialogue && talkData != null) monologueManager.DialogueFinished -= MoveScene;
                 MoveScene();
             }
 
@@ -62,6 +67,7 @@ public class DoorTrigger : MonoBehaviour
     private void MoveScene()
     {
         monologueManager.DialogueFinished -= MoveScene; // 중복 구독 방지
+        ClearSky.Player.isControlBlocked = false; // 진행 중인 시네마틱이 있어도 이동 시 강제 해제
 
         thePlayer.pendingEntrance = destinationEntrance;
         StartCoroutine(ChangeSceneWithDelay());

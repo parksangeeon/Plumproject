@@ -1580,6 +1580,7 @@ MonoBehaviour:
   requiredZone: {fileID: 0}
   blockingTalkData: {fileID: 0}
   blockingProgress: 0
+  skipTalkIf: {fileID: 0}
 --- !u!1 &885954048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,12 +1909,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: progress
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: talkData
       value: 
       objectReference: {fileID: 11400000, guid: 06610a91ca1481b4d840ed3854998841, type: 2}
+    - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
+      propertyPath: skipTalkIf
+      value: 
+      objectReference: {fileID: 11400000, guid: e2d3cd5513442c646a456afc99cb3dad, type: 2}
     - target: {fileID: 6114647330236123905, guid: 3d362a8dbbbfe5a4a8d7d0def164a4fd, type: 3}
       propertyPath: targetSceneName
       value: 1-1

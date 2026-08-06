@@ -1680,6 +1680,7 @@ MonoBehaviour:
   progress: 2
   playerCam: {fileID: 437222651}
   enemyCam: {fileID: 806872326}
+  completionFlag: {fileID: 11400000, guid: e2d3cd5513442c646a456afc99cb3dad, type: 2}
 --- !u!61 &1513450695 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 5912755945063742965, guid: a6dcc17dfe5c2a24bbc7db5221fe1327, type: 3}
