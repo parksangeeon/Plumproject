@@ -39,14 +39,16 @@ namespace ClearSky
         }
         void Start()
         {
+            if (instance != this) return; // 씬에 배치된 복제본이 이 줄까지 실행되지 않도록
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
             Hudinventory.SetActive(false);
 
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player != null)
+            if (pendingEntrance == SceneEntrance.None)
             {
-                player.transform.position = spawnPosition;
+                transform.position = spawnPosition;
+                var rb2d = GetComponent<Rigidbody2D>();
+                if (rb2d != null) rb2d.position = spawnPosition;
             }
         }
         

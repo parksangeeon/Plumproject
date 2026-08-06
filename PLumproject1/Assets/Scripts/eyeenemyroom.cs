@@ -14,6 +14,17 @@ public class EnemyFindZone : MonoBehaviour
     private bool hasTriggered = false;
     public bool IsCompleted { get; private set; }
 
+    private string FlagKey => $"zone_{gameObject.scene.name}_{gameObject.name}";
+
+    void Start()
+    {
+        if (GameFlags.GetBool(FlagKey))
+        {
+            hasTriggered = true;
+            IsCompleted = true;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!hasTriggered && collision.CompareTag("Player"))
@@ -34,15 +45,21 @@ public class EnemyFindZone : MonoBehaviour
 
         // 적 대사 (첫 번째) — 끝날 때까지 대기
         bool finished1 = false;
-        monologueManager.DialogueFinished += () => finished1 = true;
-        monologueManager.StartTalk(talkData, progress);
-        yield return new WaitUntil(() => finished1);
+        System.Action onDone = null;
+        onDone = () => { finished1 = true; monologueManager.DialogueFinished -= onDone; };
+        monologueManager.DialogueFinished += onDone;
+        bool started = monologueManager.StartTalk(talkData, progress);
+        if (!started)
+            monologueManager.DialogueFinished -= onDone; // 이미 봤거나 없는 대사 — 대기 없이 진행
+        else
+            yield return new WaitUntil(() => finished1);
 
         // 카메라 다시 플레이어에게
         playerCam.Priority = 20;
         enemyCam.Priority = 10;
 
         IsCompleted = true;
+        GameFlags.Set(FlagKey, true);
 
         // 돌아온 후 대사 (없거나 실패해도 무방)
         monologueManager.StartTalk(talkData, progress + 1);

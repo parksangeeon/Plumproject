@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class DoorTrigger : MonoBehaviour
 {
-    public string targetSceneName;
     public SceneEntrance destinationEntrance;
     private bool canEnter = false;
     private ClearSky.Player thePlayer;
@@ -71,7 +70,11 @@ public class DoorTrigger : MonoBehaviour
     {
         justEntered = true;
         yield return new WaitForSeconds(0.2f);  // 혹은 페이드 아웃 코루틴
-        SceneManager.LoadScene(targetSceneName);
+        string targetScene = SceneEntranceHelper.GetTargetScene(destinationEntrance);
+        if (targetScene != null)
+            SceneManager.LoadScene(targetScene);
+        else
+            UnityEngine.Debug.LogError($"[DoorTrigger] {destinationEntrance}에 대한 씬 매핑이 없습니다. SceneEntrance.cs의 connections를 확인하세요.");
     }
     void OnTriggerEnter2D(Collider2D other)
     {
