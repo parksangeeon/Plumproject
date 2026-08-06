@@ -16,6 +16,7 @@ namespace ClearSky
         
         private bool alive = true;
         private static Player instance;
+        public static Player Instance => instance;
         public Vector2 spawnPosition = new Vector2(0, 0); // 원하는 좌표 입력
         public Inventory inventory;
         public GameObject Hudinventory;

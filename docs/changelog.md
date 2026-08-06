@@ -158,6 +158,56 @@ DoorTrigger가 다른 씬의 EnemyFindZone을 직접 참조할 수 없으므로,
 
 ---
 
+## 씬 전환 시 카메라 즉시 스냅
+
+### 수정: `SpawnPoint.cs`
+
+**문제**: `CameraFollowSetter`(CameraManager.cs)가 2프레임 후에 Follow를 설정하는 사이, Cinemachine이 씬 초기 위치에서 플레이어 위치로 이동하는 게 화면에 보였다.
+
+**수정**: `ApplySpawn` 코루틴에 두 번째 `yield return null`을 추가해, 플레이어 위치 설정 다음 프레임에 활성 `CinemachineCamera`를 스폰 위치로 즉시 스냅.
+
+```csharp
+yield return null; // frame 2: CinemachineCamera를 스폰 위치로 즉시 스냅
+var brain = Camera.main?.GetComponent<CinemachineBrain>();
+var vcam = brain?.ActiveVirtualCamera as CinemachineCamera;
+if (vcam != null)
+{
+    vcam.Follow = player.transform;
+    vcam.ForceCameraPosition(pos, brain.transform.rotation);
+}
+```
+
+`Follow`도 직접 설정해 `CameraFollowSetter`의 실행 순서에 무관하게 동작한다. `ICinemachineCamera`에는 `Follow`가 없으므로 `CinemachineCamera`로 캐스팅 필요.
+
+---
+
+## FindAnyObjectByType → Player.Instance 교체 (스폰 위치 버그)
+
+### 원인
+
+씬에 Player 프리팹이 배치된 경우 `FindAnyObjectByType<ClearSky.Player>()`가
+DontDestroyOnLoad 플레이어 대신 복제본을 반환할 수 있다.
+
+- **DoorTrigger**: 복제본에 `pendingEntrance = Hall1_Room1_2`를 설정 → DontDestroyOnLoad 플레이어는 None 유지 → 1-hall 도착 시 SpawnPoint 조건 불일치 → 초기 위치에 스폰
+- **SpawnPoint**: 복제본의 pendingEntrance(None)를 읽어 스폰 조건 실패
+
+### 수정: `Player.cs`
+
+```csharp
+public static Player Instance => instance;
+```
+
+싱글톤 인스턴스를 외부에서 참조할 수 있도록 공개.
+
+### 수정: `Door.cs` / `SpawnPoint.cs`
+
+| 파일 | 변경 전 | 변경 후 |
+|---|---|---|
+| Door.cs | `FindAnyObjectByType<ClearSky.Player>()` | `ClearSky.Player.Instance` |
+| SpawnPoint.cs | `FindAnyObjectByType<ClearSky.Player>()` | `ClearSky.Player.Instance` |
+
+---
+
 ## TalkData 관리 원칙
 
 - `TalkData` 에셋은 `Assets/dialogue/` 폴더에 씬별로 보관

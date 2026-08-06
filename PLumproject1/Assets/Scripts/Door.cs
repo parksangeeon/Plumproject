@@ -23,7 +23,7 @@ public class DoorTrigger : MonoBehaviour
 
     void Start()
     {
-        thePlayer = FindAnyObjectByType<ClearSky.Player>();
+        thePlayer = ClearSky.Player.Instance;
         Invoke("ClearJustEntered", 0.2f);
     }
 
