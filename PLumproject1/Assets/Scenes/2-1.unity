@@ -2544,6 +2544,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1018805080}
     - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
+      propertyPath: inventoryHud
+      value: 
+      objectReference: {fileID: 942382636}
+    - target: {fileID: 5082367938963552073, guid: 0611fe9bd44630b4db029a0d89f5e388, type: 3}
       propertyPath: monologueCanvas
       value: 
       objectReference: {fileID: 1287131155}
@@ -2983,6 +2987,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d3530ee3018f684189dae47892a595e, type: 3}
+--- !u!1 &942382636 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5992449633600212780, guid: 0d3530ee3018f684189dae47892a595e, type: 3}
+  m_PrefabInstance: {fileID: 942382635}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &982328239
 GameObject:
   m_ObjectHideFlags: 0

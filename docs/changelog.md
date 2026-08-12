@@ -264,3 +264,70 @@ void OnReadFinished()
 | 1 | 1-hall DoorTrigger | 문 진입 전 대사 |
 | 2 | EnemyFindZone (progress=2) | 시네마틱 1번째 대사 |
 | 3 | EnemyFindZone (progress+1=3) | 시네마틱 2번째 대사 |
+
+---
+
+## 열쇠 아이템 픽업 구현 (1-2 씬)
+
+### 배경
+
+일기에서 "창문 틈에 열쇠를 숨겨뒀다"고 언급되는 2층 열쇠 아이템을 실제로 획득할 수 있게 구현했다. 기존 `LanternPickup` 패턴을 따르되 빛 효과는 없고, 플래그 방식도 문자열 대신 GameFlag SO를 사용하는 방향으로 정리했다.
+
+### 신규: `KeyItem.cs`
+
+`InventoryItemBase`를 상속해 `Name`만 override. 아이콘·픽업 동작은 베이스 클래스에서 처리(`gameObject.SetActive(false)`).
+
+```csharp
+public class KeyItem : InventoryItemBase
+{
+    public override string Name => "Key_1-2";
+}
+```
+
+`_Image` 슬롯에 열쇠 아이콘 Sprite를 Inspector에서 할당. `Name`이 저장/로드 시 아이템 식별 ID로 사용되므로 `ItemDatabase.asset`에 프리팹을 등록해야 로드 후 인벤토리가 복원된다.
+
+### 신규: `KeyPickup.cs`
+
+가까이 가면 `approachTalkData` 대사 자동 재생, Z키로 획득 시 `pickupTalkData` 대사 + 인벤토리 추가 + GameFlag 저장. 씬 재로드·게임 로드 시 `RestoreState()`로 획득 여부 복원해 오브젝트를 숨긴다.
+
+```csharp
+void RestoreState()
+{
+    if (acquiredFlag != null) acquiredFlag.RestoreFromSave();
+    keyAcquired = acquiredFlag != null && acquiredFlag.Value;
+    if (keyAcquired) gameObject.SetActive(false);
+}
+```
+
+### 수정: `diary.cs` / `KeyPickup.cs` — 중복 입력 방지
+
+두 트리거 콜라이더가 겹쳐있을 때 Z키 하나로 두 스크립트가 동시에 실행되어 나중에 실행된 대사가 앞선 대사를 덮어쓰는 문제가 있었다. 두 파일 모두 Update 첫 줄에 `isControlBlocked` 체크를 추가해 대사 진행 중 다른 상호작용이 끼어드는 것을 차단했다.
+
+```csharp
+void Update()
+{
+    if (ClearSky.Player.isControlBlocked) return;
+    ...
+}
+```
+
+### 주의: TalkData progress 값
+
+`MonologueManager.seenEvents`는 TalkData 구분 없이 progress 정수만 저장한다. 열쇠 TalkData의 progress를 **0**으로 설정했는데 1로 설정하면 매칭되는 content가 없어 대사가 아예 안 나온다. 각 TalkData 에셋의 content progress 값과 스크립트에서 넘기는 progress 값이 일치하는지 반드시 확인할 것.
+
+### Inspector 작업 요약
+
+1. `Create → Game → GameFlag` → 이름: `Key_1-2_Acquired`
+2. `Assets/dialogue/`에 TalkData 에셋 생성, progress=0으로 대사 작성
+3. 1-2 씬에 열쇠 GameObject 생성: `Collider2D(IsTrigger)` + `KeyItem` + `KeyPickup` 컴포넌트 부착
+4. `ItemDatabase.asset` → `Item Prefabs`에 열쇠 프리팹 등록
+
+### 삽질 기록
+
+**KeyItem 컴포넌트 누락**: `GetComponent<IInventoryItem>()`이 null 반환. `KeyPickup`과 같은 GameObject에 `KeyItem`이 없었던 것. 두 컴포넌트는 반드시 같은 오브젝트에 부착해야 한다.
+
+**HUD Inventory 미할당**: HUD 오브젝트의 `Inventory` 슬롯에 Player의 Inventory 컴포넌트가 연결되지 않아 `ItemAdded` 이벤트를 구독하지 못함 → 아이콘이 슬롯에 표시되지 않음.
+
+**diary/KeyPickup MonologueManager 미할당**: 두 스크립트 모두 `MonologueManager` 슬롯을 Inspector에서 직접 할당해야 한다.
+
+**Inspector 할당 원칙**: 슬롯 참조는 코드로 자동 검색하지 않고 Inspector에서 직접 연결한다.

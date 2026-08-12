@@ -19,6 +19,7 @@ public class MonologueManager : MonoBehaviour
 
     public float typingSpeed = 0.05f;
     private Coroutine typingCoroutine;
+    private bool hudWasActive;
 
     void Awake()
     {
@@ -99,7 +100,7 @@ public class MonologueManager : MonoBehaviour
             ClearSky.Player.isControlBlocked = true;
             curTalkList = selected.scripts;
             monologueCanvas.SetActive(true);
-            if (inventoryHud != null) inventoryHud.SetActive(false);
+            if (inventoryHud != null) { hudWasActive = inventoryHud.activeSelf; inventoryHud.SetActive(false); }
             curTalkIndex = 0;
             NextTalk();
             return true;
@@ -127,7 +128,7 @@ public class MonologueManager : MonoBehaviour
             Debug.Log("대화 종료 - isControlBlocked 해제됨");
             Initialize();
             ClearSky.Player.isControlBlocked = false;
-            if (inventoryHud != null) inventoryHud.SetActive(true);
+            if (inventoryHud != null) inventoryHud.SetActive(hudWasActive);
             DialogueFinished?.Invoke();
             return false;
         }

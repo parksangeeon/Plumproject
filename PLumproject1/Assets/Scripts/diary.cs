@@ -9,6 +9,7 @@ public class diary : MonoBehaviour
 
     void Update()
     {
+        if (ClearSky.Player.isControlBlocked) return;
         if (isPlayerNear && Input.GetKeyDown(KeyCode.Z))
         {
             bool started = monologueManager.StartTalk(talkData, progress);

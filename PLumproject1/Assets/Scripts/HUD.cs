@@ -9,7 +9,7 @@ public class HUD : MonoBehaviour
     {
         if (Inventory != null)
         {
-            Inventory.ItemAdded += OnItemAdded;       // ← 메서드명 새로 통일
+            Inventory.ItemAdded += OnItemAdded;
             Inventory.ItemRemoved += OnItemRemoved;
         }
         else
