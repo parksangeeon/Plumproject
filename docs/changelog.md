@@ -208,6 +208,48 @@ public static Player Instance => instance;
 
 ---
 
+## 일기 상호작용 구현 (diary.cs 개선)
+
+### 수정: `diary.cs`
+
+기존 코드에 `isControlBlocked` 처리와 `DialogueFinished` 구독이 없어 읽는 중 플레이어가 움직이고 조작이 복구되지 않는 문제 수정.
+
+| 항목 | 변경 전 | 변경 후 |
+|---|---|---|
+| progress | 하드코딩 `0` | `public int progress` (Inspector 설정) |
+| 조작 잠금 | 없음 | StartTalk 성공 시 `isControlBlocked = true` |
+| 조작 복구 | 없음 | `DialogueFinished` 구독 → `OnReadFinished`에서 해제 |
+| 구독 누수 | 없음 | 람다 대신 메서드 참조로 자동 해제 |
+
+```csharp
+void Update()
+{
+    if (isPlayerNear && Input.GetKeyDown(KeyCode.Z))
+    {
+        bool started = monologueManager.StartTalk(talkData, progress);
+        if (started)
+        {
+            ClearSky.Player.isControlBlocked = true;
+            monologueManager.DialogueFinished += OnReadFinished;
+        }
+    }
+}
+
+void OnReadFinished()
+{
+    ClearSky.Player.isControlBlocked = false;
+    monologueManager.DialogueFinished -= OnReadFinished;
+}
+```
+
+### Inspector 작업
+
+- `Assets/dialogue/` 에 TalkData 에셋(`1-2DiaryD`) 생성
+- progress 0에 일기 내용을 scripts[]로 구성 (`isRepeatable: true`)
+- 1-2 씬 일기 GameObject에 Collider2D(IsTrigger) + `diary` 컴포넌트 추가 후 할당
+
+---
+
 ## TalkData 관리 원칙
 
 - `TalkData` 에셋은 `Assets/dialogue/` 폴더에 씬별로 보관
