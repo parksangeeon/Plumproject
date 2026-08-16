@@ -254,7 +254,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.7372549, g: 0.74509805, b: 0.5137255, a: 1}
   m_FlipX: 0
@@ -2575,7 +2575,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -377.03467, y: 0}
-  m_SizeDelta: {x: 700.0693, y: 549}
+  m_SizeDelta: {x: 800, y: 549}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &806972094
 MonoBehaviour:
@@ -2624,8 +2624,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2746,6 +2746,10 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 1331875808}
+    - target: {fileID: 5874232600832749475, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
+      propertyPath: movePower
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8931030003405013632, guid: b71a20b7da15f4a4e8e2c3307f4f8aa4, type: 3}
       propertyPath: m_LocalScale.x
       value: 4.7526674
@@ -7053,6 +7057,10 @@ PrefabInstance:
     - target: {fileID: 8642991087651026988, guid: 877f09a1f3494c54393ac6c095de4495, type: 3}
       propertyPath: m_Name
       value: Inventory
+      objectReference: {fileID: 0}
+    - target: {fileID: 8642991087651026988, guid: 877f09a1f3494c54393ac6c095de4495, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

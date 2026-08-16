@@ -74,6 +74,7 @@ namespace ClearSky
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
+                Debug.Log($"[Player] I key: Hudinventory={Hudinventory}, activeSelf={Hudinventory?.activeSelf}");
                 Hudinventory.SetActive(!Hudinventory.activeSelf);
             }
         }

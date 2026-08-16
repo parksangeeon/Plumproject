@@ -2277,7 +2277,7 @@ Transform:
   m_GameObject: {fileID: 1140724778}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.04, y: -2.89, z: -10.005456}
+  m_LocalPosition: {x: 15.36, y: -2.89, z: -10.005456}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2295,8 +2295,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8f7b4541879d84fb1a82be47f98da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzle: {fileID: 1637111592}
-  HUD: {fileID: 1758884422}
+  puzzle: {fileID: 1715151395}
+  inventoryPanel: {fileID: 388116503}
+  monster: {fileID: 1197805586}
   playerTag: Player
 --- !u!1 &1181540326
 GameObject:
@@ -2434,7 +2435,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e26db2443056cb747a2ac532ba93e612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  approachSpeed: 2
+  defaultPosition: {x: 40, y: 0, z: 0}
+  forceChase: 0
 --- !u!61 &1197805587
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2572,7 +2575,7 @@ Transform:
   m_GameObject: {fileID: 1197805585}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.51, y: -0.7046826, z: 0}
+  m_LocalPosition: {x: 53.15, y: -0.7046826, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3606,9 +3609,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac0e0328633d33459c7946829f859ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: ingame
-  destinationPointName: door1
+  destinationEntrance: 0
   monologueManager: {fileID: 0}
+  talkData: {fileID: 0}
+  progress: 0
+  requiredZone: {fileID: 0}
+  blockingTalkData: {fileID: 0}
+  blockingProgress: 0
+  skipTalkIf: {fileID: 0}
 --- !u!114 &1606241631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3621,7 +3629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3966ba42f6d804d44b777b70d37154f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints: []
 --- !u!1 &1637111588
 GameObject:
   m_ObjectHideFlags: 0
@@ -3640,7 +3647,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1637111589
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3711,15 +3718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37c4a9b9a4c20fe4bbabd778353a832e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playArea: {fileID: 1938273319}
-  notePrefab: {fileID: 3245912199772811389, guid: 5b0433fb3b9581a4aa6d9a40a1445a09, type: 3}
-  noteCount: 4
-  approachTime: 1.2
-  hitWindow: 0.25
-  startDelay: 1
-  puzzleClearedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &1713242289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3817,6 +3815,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 904d0b8c28276a64c8101ddedd894d57, type: 3}
+--- !u!1 &1715151394
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1715151396}
+  - component: {fileID: 1715151395}
+  m_Layer: 0
+  m_Name: RhythmPuzzleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1715151395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715151394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bcef800f7035fd41aa0d0e566d95d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playArea: {fileID: 1938273319}
+  notePrefab: {fileID: 3245912199772811389, guid: 5b0433fb3b9581a4aa6d9a40a1445a09, type: 3}
+  noteCount: 5
+  approachTime: 1.2
+  hitWindow: 0.2
+  startDelay: 0.5
+  allowEscape: 1
+  puzzleClearedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onOpened:
+    m_PersistentCalls:
+      m_Calls: []
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
+  noteSpawnPoints: []
+  enemy: {fileID: 0}
+--- !u!4 &1715151396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715151394}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 583.16974, y: 202.6929, z: -8.233419}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1726902208
 GameObject:
   m_ObjectHideFlags: 0
@@ -4599,3 +4659,4 @@ SceneRoots:
   - {fileID: 1140724780}
   - {fileID: 5699872287379113359}
   - {fileID: 1332257191}
+  - {fileID: 1715151396}
