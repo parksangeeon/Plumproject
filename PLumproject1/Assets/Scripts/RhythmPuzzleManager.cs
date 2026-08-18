@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class RhythmPuzzleManager : MonoBehaviour
 {
     [Header("References")]
+    public GameObject panelRoot;        // 실제로 켜고 끌 루트 패널 (비우면 이 오브젝트 자체)
     public RectTransform playArea;      // 노트가 뜨는 UI 영역
     public GameObject notePrefab;       // RhythmNote가 붙은 UI 프리팹
 
@@ -53,7 +54,7 @@ public class RhythmPuzzleManager : MonoBehaviour
         }
 
         // 패널 활성화
-        gameObject.SetActive(true);
+        (panelRoot != null ? panelRoot : gameObject).SetActive(true);
 
         inProgress = true;
         nextIndex = 0;
@@ -76,7 +77,7 @@ public class RhythmPuzzleManager : MonoBehaviour
         inProgress = false;
 
         // 패널 비활성화
-        gameObject.SetActive(false);
+        (panelRoot != null ? panelRoot : gameObject).SetActive(false);
 
         // 몬스터/이벤트
         if (enemy != null) enemy.ResetToDefault();

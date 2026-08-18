@@ -11,6 +11,8 @@ public class PuzzleStation : MonoBehaviour
     [Header("Player")]
     public string playerTag = "Player";
 
+    private bool isPlayerInZone = false;
+
     private void Reset()
     {
         var col = GetComponent<Collider2D>();
@@ -19,14 +21,12 @@ public class PuzzleStation : MonoBehaviour
 
     private void Awake()
     {
-        // 혹시 몬스터 참조 안 넣었으면 자동으로 하나 찾아줌(씬에 하나만 있다고 가정)
         if (monster == null) monster = FindObjectOfType<EnemiesController>(true);
         if (puzzle == null) puzzle = FindObjectOfType<RhythmPuzzleManager>(true);
     }
 
     private void OnEnable()
     {
-        // 퍼즐이 닫힐 때(성공/실패/ESC) HUD 복구 + 몬스터 리셋
         if (puzzle != null)
         {
             puzzle.onClosed.AddListener(ReenableHUD);
@@ -43,16 +43,15 @@ public class PuzzleStation : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void Update()
     {
-        if (!other.CompareTag(playerTag)) return;
+        if (!isPlayerInZone) return;
+        if (puzzle != null && puzzle.InProgress) return;
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            // HUD 숨김
             if (inventoryPanel != null) inventoryPanel.gameObject.SetActive(false);
 
-            // ★ 퍼즐 시작과 동시에 몬스터 출발(직접 호출)
             if (monster != null)
             {
                 monster.StartChaseLeft();
@@ -63,7 +62,6 @@ public class PuzzleStation : MonoBehaviour
                 Debug.LogWarning("[Station] monster reference is NULL");
             }
 
-            // 퍼즐 시작
             if (puzzle != null)
             {
                 puzzle.StartPuzzle();
@@ -73,6 +71,16 @@ public class PuzzleStation : MonoBehaviour
                 Debug.LogError("[Station] puzzle reference is NULL");
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag(playerTag)) isPlayerInZone = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag(playerTag)) isPlayerInZone = false;
     }
 
     private void ReenableHUD()
