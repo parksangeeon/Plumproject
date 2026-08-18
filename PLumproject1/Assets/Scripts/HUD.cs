@@ -9,8 +9,9 @@ public class HUD : MonoBehaviour
     {
         if (Inventory != null)
         {
-            Inventory.ItemAdded += OnItemAdded;       // ← 메서드명 새로 통일
+            Inventory.ItemAdded += OnItemAdded;
             Inventory.ItemRemoved += OnItemRemoved;
+            Debug.Log($"[HUD] Inventory 구독 완료 (InstanceID={Inventory.GetInstanceID()})");
         }
         else
         {
@@ -30,7 +31,7 @@ public class HUD : MonoBehaviour
 
     private void OnItemAdded(object sender, InventoryEventArgs e)
     {
-        // 인벤토리 패널 찾기
+        Debug.Log($"[HUD] OnItemAdded 호출됨: {e.Item?.Name}");
         Transform inventoryPanelTransform = transform.Find("InventoryPanel");
         if (inventoryPanelTransform == null)
         {
@@ -38,27 +39,25 @@ public class HUD : MonoBehaviour
             return;
         }
         RectTransform inventoryPanelRT = inventoryPanelTransform as RectTransform;
+        var canvas = GetComponentInParent<Canvas>();
 
         bool filled = false;
         foreach (Transform slot in inventoryPanelTransform)
         {
-            // Border -> (자식) -> ItemImage 구조라고 가정
-            Transform imageTransform = slot.GetChild(0).GetChild(0);
-            Image image = imageTransform.GetComponent<Image>();
-            ItemDragHandler drag = imageTransform.GetComponent<ItemDragHandler>();
+            ItemDragHandler drag = slot.GetComponentInChildren<ItemDragHandler>();
+            if (drag == null) continue;
 
-            if (!image.enabled)
+            if (drag.Item == null)
             {
-                // 슬롯 채우기
-                image.enabled = true;
-                image.sprite  = e.Item.Image;
-
-                // 드래그 핸들러에 참조 주입
+                Image image = drag.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.enabled = true;
+                    image.sprite  = e.Item.Image;
+                }
                 drag.Item           = e.Item;
                 drag.inventory      = Inventory;
                 drag.inventoryPanel = inventoryPanelRT;
-
-                var canvas = GetComponentInParent<Canvas>();
                 if (canvas != null) drag.canvas = canvas;
 
                 filled = true;
@@ -67,41 +66,28 @@ public class HUD : MonoBehaviour
         }
 
         if (!filled)
-        {
-            Debug.LogWarning($"[HUD] OnItemAdded: '{e.Item?.Name}'을 넣을 빈 슬롯을 찾지 못했습니다 (모든 슬롯이 이미 enabled=true 상태).");
-        }
+            Debug.LogWarning($"[HUD] OnItemAdded: '{e.Item?.Name}'을 넣을 빈 슬롯 없음.");
     }
 
     private void OnItemRemoved(object sender, InventoryEventArgs e)
     {
         Transform inventoryPanelTransform = transform.Find("InventoryPanel");
-        if (inventoryPanelTransform == null)
-        {
-            Debug.LogWarning("[HUD] OnItemRemoved: 'InventoryPanel'을 찾지 못했습니다.");
-            return;
-        }
+        if (inventoryPanelTransform == null) return;
 
-        bool cleared = false;
         foreach (Transform slot in inventoryPanelTransform)
         {
-            Transform imageTransform = slot.GetChild(0).GetChild(0);
-            Image image = imageTransform.GetComponent<Image>();
-            ItemDragHandler drag = imageTransform.GetComponent<ItemDragHandler>();
-
-            // 같은 인스턴스인지 참조 비교
+            ItemDragHandler drag = slot.GetComponentInChildren<ItemDragHandler>();
             if (drag != null && object.ReferenceEquals(drag.Item, e.Item))
             {
-                image.enabled = false;
-                image.sprite  = null;
-                drag.Item     = null;
-                cleared = true;
+                Image image = drag.GetComponent<Image>();
+                if (image != null)
+                {
+                    image.enabled = false;
+                    image.sprite  = null;
+                }
+                drag.Item = null;
                 break;
             }
-        }
-
-        if (!cleared)
-        {
-            Debug.LogWarning($"[HUD] OnItemRemoved: '{(e.Item != null ? e.Item.Name : "null")}'와 일치하는 슬롯을 찾지 못했습니다.");
         }
     }
 }

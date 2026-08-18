@@ -21,6 +21,9 @@ public class RhythmPuzzleManager : MonoBehaviour
     public UnityEvent onOpened;             // 퍼즐 열릴 때 호출
     public UnityEvent onClosed;             // 퍼즐 닫힐 때(성공/실패/ESC) 호출
 
+    [Header("Note Spawn Positions (열쇠 모양 순서대로)")]
+    public RectTransform[] noteSpawnPoints;
+
     [Header("Monster (optional direct binding)")]
     public EnemiesController enemy;         // 있으면 시작/종료 시 자동 제어(없어도 정상 동작)
 
@@ -118,12 +121,19 @@ public class RhythmPuzzleManager : MonoBehaviour
             return;
         }
 
-        // 랜덤 위치(여백)
-        Rect rect = playArea.rect;
-        float margin = 60f;
-        float x = Random.Range(rect.xMin + margin, rect.xMax - margin);
-        float y = Random.Range(rect.yMin + margin, rect.yMax - margin);
-        ((RectTransform)go.transform).anchoredPosition = new Vector2(x, y);
+        // 고정 위치(noteSpawnPoints) 또는 랜덤 위치
+        if (noteSpawnPoints != null && nextIndex < noteSpawnPoints.Length && noteSpawnPoints[nextIndex] != null)
+        {
+            ((RectTransform)go.transform).anchoredPosition = noteSpawnPoints[nextIndex].anchoredPosition;
+        }
+        else
+        {
+            Rect rect = playArea.rect;
+            float margin = 60f;
+            float x = Random.Range(rect.xMin + margin, rect.xMax - margin);
+            float y = Random.Range(rect.yMin + margin, rect.yMax - margin);
+            ((RectTransform)go.transform).anchoredPosition = new Vector2(x, y);
+        }
 
         // 정각(링이 테두리에 딱 닿는 시점)
         float start = Time.unscaledTime + Mathf.Max(0f, extraDelay);

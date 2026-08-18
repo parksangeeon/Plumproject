@@ -1,46 +1,39 @@
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class diary : MonoBehaviour
 {
     public MonologueManager monologueManager;
     public TalkData talkData;
+    public int progress = 0;
     private bool isPlayerNear = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    
-    private void OnTriggerEnter2D(Collider2D other)
+    void Update()
     {
-        if (other.CompareTag("Player"))
+        if (ClearSky.Player.isControlBlocked) return;
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.Z))
         {
-            isPlayerNear = true;
-        }
-
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isPlayerNear = false;
-  
-        }
-    }
-
-
-void Update()
-    {
-        if ( isPlayerNear &&Input.GetKeyDown(KeyCode.Z))
-         {
-            if (monologueManager != null && talkData != null)
+            bool started = monologueManager.StartTalk(talkData, progress);
+            if (started)
             {
-                monologueManager.StartTalk(talkData, 0);
+                ClearSky.Player.isControlBlocked = true;
+                monologueManager.DialogueFinished += OnReadFinished;
             }
         }
+    }
+
+    void OnReadFinished()
+    {
+        ClearSky.Player.isControlBlocked = false;
+        monologueManager.DialogueFinished -= OnReadFinished;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player")) isPlayerNear = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player")) isPlayerNear = false;
     }
 }
