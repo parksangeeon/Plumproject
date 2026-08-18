@@ -37,7 +37,7 @@ public class KeyPickup : MonoBehaviour
             acquiredFlag?.Set(true);
 
             IInventoryItem item = GetComponent<IInventoryItem>();
-            Debug.Log($"[KeyPickup] item={item}, inventory={inventory}");
+            Debug.Log($"[KeyPickup] item={item}, inventory InstanceID={inventory?.GetInstanceID()}");
             if (item != null) inventory.AddItem(item);
             else Debug.LogWarning("[KeyPickup] IInventoryItem 컴포넌트를 찾지 못했습니다.");
 

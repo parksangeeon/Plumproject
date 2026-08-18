@@ -214,8 +214,8 @@ MonoBehaviour:
   movePower: 15
   pendingEntrance: -1
   spawnPosition: {x: 0, y: 0}
-  inventory: {fileID: 6661437585338311306, guid: 877f09a1f3494c54393ac6c095de4495, type: 3}
-  Hudinventory: {fileID: 1870694949720777574, guid: 0cf53e2fc7247e244bfc0afb71a6aea0, type: 3}
+  inventory: {fileID: 5942539872343722634, guid: 8d87cb564fa8857438cfe57a3f4f6a3b, type: 3}
+  Hudinventory: {fileID: 800434224268047489, guid: 0cf53e2fc7247e244bfc0afb71a6aea0, type: 3}
 --- !u!50 &-913447564036245065
 Rigidbody2D:
   serializedVersion: 5

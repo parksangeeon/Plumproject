@@ -43,7 +43,7 @@ namespace ClearSky
             if (instance != this) return; // 씬에 배치된 복제본이 이 줄까지 실행되지 않도록
             rb = GetComponent<Rigidbody2D>();
             anim = GetComponent<Animator>();
-            Hudinventory.SetActive(false);
+            if (Hudinventory != null) Hudinventory.SetActive(false);
 
             if (pendingEntrance == SceneEntrance.None)
             {
@@ -72,9 +72,9 @@ namespace ClearSky
         }
         void OpenInventory()
         {
+            if (Hudinventory == null) return;
             if (Input.GetKeyDown(KeyCode.I))
             {
-                Debug.Log($"[Player] I key: Hudinventory={Hudinventory}, activeSelf={Hudinventory?.activeSelf}");
                 Hudinventory.SetActive(!Hudinventory.activeSelf);
             }
         }
